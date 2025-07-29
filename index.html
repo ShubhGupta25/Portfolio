@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio - Shubh Gupta</title>
+
+    <style>
+      /* ================== RESET & BASE ================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        color: #fff;
+        line-height: 1.6;
+        min-height: 100vh;
+        background: radial-gradient(
+            1200px 600px at 10% -10%,
+            rgba(0, 201, 255, 0.06),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 500px at 110% 110%,
+            rgba(255, 0, 204, 0.05),
+            transparent 70%
+          ),
+          linear-gradient(120deg, #0a0a0a 70%, #1a1a2e 100%);
+      }
+
+      /* Motion */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      section {
+        animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      /* ================== VARIABLES ================== */
+      :root {
+        --accent1: #00c9ff;
+        --accent2: #ff00cc;
+        --gradient: linear-gradient(90deg, var(--accent2), var(--accent1));
+        --card-bg: #181824;
+        --card-glass: rgba(24, 24, 36, 0.6);
+        --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        --ring: 0 0 0 2px rgba(0, 201, 255, 0.35);
+        --container: 1200px;
+        --wide: 1500px;
+      }
+
+      /* ================== HEADER ================== */
+      header {
+        position: fixed;
+        inset: 0 0 auto 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 7vw;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+      }
+      header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 32px;
+        font-weight: 500;
+        font-size: 1.08rem;
+        position: relative;
+        transition: color 0.3s;
+      }
+      nav a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        height: 2px;
+        width: 0;
+        background: var(--accent1);
+        transition: width 0.3s;
+      }
+      nav a:hover {
+        color: var(--accent1);
+      }
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      /* ================== SECTION WRAPPER ================== */
+      section {
+        padding: 110px 8vw 70px;
+        min-height: 60vh;
+        max-width: var(--container);
+        margin: 0 auto;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: 0.6px;
+        margin-bottom: 18px;
+      }
+      .section-kicker {
+        color: #9aa3ad;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+        margin-bottom: 6px;
+      }
+      .section-divider {
+        width: 90px;
+        height: 3px;
+        border-radius: 999px;
+        margin: 10px 0 22px 0;
+        background: var(--gradient);
+        box-shadow: 0 0 18px rgba(0, 201, 255, 0.45);
+      }
+
+      /* Responsive section padding */
+      @media (max-width: 900px) {
+        section {
+          padding: 90px 4vw 50px;
+        }
+        header {
+          padding: 14px 4vw;
+        }
+      }
+      @media (max-width: 600px) {
+        section {
+          padding: 80px 2vw 30px;
+        }
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px 2vw;
+        }
+        nav a {
+          margin-left: 18px;
+          font-size: 1rem;
+        }
+      }
+
+      /* ================== HERO ================== */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 70vh;
+        gap: 18px;
+      }
+      .hero h2 {
+        font-size: clamp(2.2rem, 4vw + 1rem, 3.4rem);
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 6px 28px rgba(0, 201, 255, 0.25);
+      }
+      .hero p {
+        font-size: 1.2rem;
+        color: #cfd3d8;
+        max-width: 800px;
+      }
+      .buttons {
+        margin-top: 12px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .buttons a {
+        display: inline-block;
+        padding: 14px 32px;
+        background: var(--gradient);
+        color: #fff;
+        font-weight: 800;
+        border-radius: 999px;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        box-shadow: 0 0 18px rgba(0, 201, 255, 0.45);
+        transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+      }
+      .buttons a:hover {
+        transform: translateY(-3px) scale(1.05);
+        background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      }
+
+      /* Socials */
+      .socials {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .socials a img {
+        width: 32px;
+        height: 32px;
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.15));
+        transition: transform 0.2s, filter 0.2s;
+      }
+      .socials a:hover img {
+        transform: scale(1.1) rotate(-4deg);
+        filter: drop-shadow(0 0 10px var(--accent1));
+      }
+
+      /* ================== ABOUT ================== */
+      .about {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 48px;
+        margin-top: 10px;
+      }
+      .about .avatar-wrap {
+        position: relative;
+      }
+      .about img {
+        width: 260px;
+        min-width: 180px;
+        border-radius: 50%;
+        border: 5px solid transparent;
+        background: radial-gradient(
+            120% 120% at 0% 0%,
+            rgba(0, 201, 255, 0.25),
+            rgba(255, 0, 204, 0.25)
+          )
+          border-box;
+        box-shadow: 0 10px 40px rgba(0, 201, 255, 0.15),
+          0 16px 48px rgba(0, 0, 0, 0.35);
+        transition: transform 0.3s;
+      }
+      .about img:hover {
+        transform: scale(1.04) rotate(-2deg);
+      }
+      .about-card {
+        background: var(--card-glass);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: var(--card-shadow);
+        border-radius: 16px;
+        padding: 20px 22px;
+      }
+      .about h3 {
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+      .about p {
+        color: #cfd3d8;
+        font-size: 1.06rem;
+        line-height: 1.75;
+      }
+
+      /* ================== SKILLS ================== */
+      .skills-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 24px;
+      }
+      .skill {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 85, 0, 0.6);
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.98rem;
+        letter-spacing: 0.3px;
+        color: #e9eef2;
+        box-shadow: 0 0 10px rgba(255, 0, 204, 0.12),
+          0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        cursor: default;
+      }
+      .skill:hover {
+        background: var(--gradient);
+        box-shadow: 0 0 18px rgba(0, 201, 255, 0.35);
+        transform: translateY(-2px) scale(1.05);
+      }
+
+      /* ================== ACHIEVEMENTS ================== */
+      #achievements ul {
+        margin-top: 12px;
+        list-style: none;
+        display: grid;
+        gap: 12px;
+      }
+      #achievements li {
+        position: relative;
+        padding-left: 28px;
+        color: #cfd3d8;
+        font-size: 1.05rem;
+      }
+      #achievements li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--gradient);
+        box-shadow: 0 0 10px rgba(0, 201, 255, 0.6);
+      }
+
+      /* ================== EDUCATION ================== */
+      #education .timeline {
+        position: relative;
+        margin-top: 8px;
+        padding-left: 28px;
+      }
+      #education .timeline::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 201, 255, 0.6),
+          rgba(255, 0, 204, 0.6)
+        );
+        border-radius: 2px;
+      }
+      .edu-item {
+        position: relative;
+        margin: 18px 0;
+        padding: 16px 16px 16px 18px;
+        background: var(--card-glass);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+      }
+      .edu-item::before {
+        content: "";
+        position: absolute;
+        left: -19px;
+        top: 18px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--gradient);
+        box-shadow: 0 0 12px rgba(0, 201, 255, 0.65);
+      }
+      #education .logo {
+        width: 110px;
+        border-radius: 10px;
+        background: #fff;
+        padding: 8px;
+        box-shadow: 0 2px 12px rgba(255, 0, 204, 0.45);
+        border: none;
+      }
+      #education b {
+        font-size: 1.1rem;
+        color: var(--accent1);
+      }
+      #education span {
+        color: #aab3bd;
+        font-size: 0.98rem;
+      }
+
+      /* ================== CONTACT ================== */
+      .contact-form {
+        background: var(--card-glass);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 26px 24px;
+        border-radius: 16px;
+        max-width: 560px;
+        margin: 24px auto 0;
+        box-shadow: var(--card-shadow);
+      }
+      .contact-form h4 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        margin-bottom: 16px;
+        padding: 14px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        background: #1f2236;
+        color: #fff;
+        font-size: 1.02rem;
+        outline: none;
+        transition: box-shadow 0.2s, border-color 0.2s;
+      }
+      .contact-form input::placeholder,
+      .contact-form textarea::placeholder {
+        color: #9aa3ad;
+      }
+      .contact-form input:focus,
+      .contact-form textarea:focus {
+        border-color: transparent;
+        box-shadow: var(--ring), 0 0 0 6px rgba(0, 201, 255, 0.08);
+      }
+      .contact-form button {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        border: none;
+        cursor: pointer;
+        border-radius: 999px;
+        font-weight: 900;
+        letter-spacing: 0.6px;
+        color: #fff;
+        background: var(--gradient);
+        box-shadow: 0 0 14px rgba(255, 0, 204, 0.35);
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      }
+      .contact-form button:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(90deg, var(--accent1), var(--accent2));
+        box-shadow: 0 0 22px rgba(0, 201, 255, 0.4);
+      }
+
+      /* ================== PROJECTS & EXPERIENCE ================== */
+      /* Wider containers */
+      #projects-section,
+      #portfolio {
+        max-width: var(--wide);
+        width: min(96vw, var(--wide));
+      }
+
+      /* Grid: 3 columns desktop, responsive */
+      .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 28px;
+        margin-top: 28px;
+      }
+      @media (max-width: 1024px) {
+        .portfolio-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        .portfolio-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Card base (shared) */
+      .card {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        background: var(--card-glass);
+        border: 1px solid rgba(0, 201, 255, 0.12);
+        height: 420px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px rgba(0, 201, 255, 0.12),
+          0 6px 18px rgba(0, 0, 0, 0.45);
+        border-color: rgba(0, 201, 255, 0.35);
+      }
+
+      /* Card image */
+      .card img {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+        background: #0f0f14;
+        border-bottom: 1px solid #222;
+      }
+      /* Experience logos: contain and banner ratio */
+      #portfolio .card img {
+        aspect-ratio: 16 / 6;
+        object-fit: contain;
+        padding: 10px;
+      }
+
+      /* Card content (scrollable, hidden bars) */
+      .card-content {
+        flex: 1;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow: auto;
+      }
+      .card-content::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+      .card-content {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .card h4 {
+        font-size: 1.06rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: 0.2px;
+        color: #fff;
+      }
+      .card p {
+        font-size: 0.98rem;
+        color: #cfd3d8;
+        line-height: 1.55;
+      }
+
+      /* Meta pills in cards (language, stars) */
+      .card .skill {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 0, 204, 0.35);
+        box-shadow: 0 0 10px rgba(255, 0, 204, 0.15);
+        padding: 8px 14px;
+        font-size: 0.9rem;
+        border-radius: 999px;
+      }
+
+      /* ================== FOOTER ================== */
+      footer {
+        text-align: center;
+        padding: 28px 0 18px;
+        background: #000;
+        color: #888;
+        font-size: 1rem;
+        margin-top: 40px;
+        border-top: 1px solid #181824;
+      }
+
+      /* ================== ACCESSIBILITY ================== */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+
+    <style>
+      /* Keep Option A rules above, then add this for a moving sheen */
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: -30% -10%;
+        pointer-events: none;
+        background: linear-gradient(
+          120deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.08) 35%,
+          rgba(255, 255, 255, 0.12) 50%,
+          rgba(255, 255, 255, 0.08) 65%,
+          transparent 100%
+        );
+        transform: translateX(-40%);
+        opacity: 0;
+        transition: transform 0.6s ease, opacity 0.25s ease;
+        mix-blend-mode: screen; /* subtle blend */
+      }
+
+      /* On hover, the sheen slides across */
+      .card:hover::after,
+      .card:focus-within::after {
+        transform: translateX(30%);
+        opacity: 1;
+      }
+
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .card::after {
+          transition: opacity 0.2s ease;
+          transform: none;
+        }
+        .card:hover::after {
+          transform: none;
+        }
+      }
+
+      /* Header wrapper fixes */
+      .hdr__inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+
+        /* keep it centered and wide like your sections */
+        max-width: 1500px; /* or var(--wide) if you defined it */
+        width: min(96vw, 1500px);
+        margin: 0 auto;
+      }
+
+      /* Optional: keep nav tidy on small screens */
+      .nav {
+        display: flex;
+        flex-wrap: wrap; /* let it wrap if space is tight */
+        align-items: center;
+        gap: 18px; /* replaces margin-left on <a> */
+      }
+      .nav a {
+        margin-left: 0; /* since we use gap now */
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.08rem;
+        position: relative;
+      }
+
+      /* Mobile: stack brand above nav */
+      @media (max-width: 600px) {
+        .hdr__inner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .nav {
+          gap: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hdr" role="banner">
+      <div class="hdr__inner">
+        <h1 class="brand">Shubh Gupta</h1>
+        <nav class="nav" aria-label="Primary">
+          <a href="#home" aria-current="page">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects-section">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#achievements">Achievements</a>
+          <a href="#education">Education</a>
+          <a href="#portfolio">Experience</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <!-- Hero -->
+      <section class="hero sec" id="home" aria-labelledby="hero-title">
+        <h2 id="hero-title">Hi, I'm Shubh Gupta</h2>
+        <p>Java Developer | Microservices | Spring Boot | Cloud Enthusiast</p>
+
+        <div class="buttons">
+          <a href="#projects">View Projects</a>
+          <a href="#contact">Contact Me</a>
+        </div>
+
+        <div class="socials" aria-label="Social links">
+          <a
+            href="https://www.linkedin.com/in/shubh-guptaa/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+              alt="LinkedIn"
+            />
+          </a>
+          <a
+            href="https://github.com/ShubhGupta25/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img src="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" />
+          </a>
+          <a
+            href="https://leetcode.com/ShubhGupta25/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="https://cdn.simpleicons.org/leetcode/ffffff"
+              alt="LeetCode"
+            />
+          </a>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="sec" id="about" aria-labelledby="about-title">
+        <a id="about" class="anch" aria-hidden="true"></a>
+        <h3 class="section-title" id="about-title">About</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="about">
+          <img
+            src="https://avatars.githubusercontent.com/u/86280855?v=4"
+            alt="Shubh Gupta avatar"
+          />
+          <div class="about-card">
+            <h3>About Me</h3>
+            <p>
+              Java developer with 2 years of experience in event-driven
+              microservices and legacy modernization using Java and Spring Boot.
+              Strong in collaboration, optimization, and adapting to new tech.
+              <br /><br />
+              <b>Location:</b> Bengaluru, Karnataka<br />
+              <b>Email:</b> shubhgupta036@gmail.com<br />
+              <b>Phone:</b> +91 9752897467
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience (keeps #portfolio for styling) -->
+      <section class="sec" id="portfolio" aria-labelledby="exp-title">
+        <a id="exp" class="anch" aria-hidden="true"></a>
+        <h3 class="section-title" id="exp-title">Experience</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="portfolio-grid">
+          <article class="card">
+            <img
+              src="https://cdn.simpleicons.org/infosys/0a74ff"
+              alt="Infosys logo"
+            />
+            <div class="card-content">
+              <h4>Specialist Programmer, Infosys</h4>
+              <p>
+                <b>02/2024 – Present | Bangalore, Karnataka</b><br />
+                Engineer III (Contractor) at American Express.<br />
+                • Migrated legacy mainframe systems to Java microservices using
+                Spring Boot.<br />
+                • Built a configurable, global codebase supporting multiple
+                markets.<br />
+                • Developed a rule engine with ANTLR for dynamic business
+                logic.<br />
+                • Implemented Kafka-based batch and real-time pipeline for data
+                delivery.<br />
+                • Automated binary data transformation for seamless
+                integration.<br />
+                • Configured a variety of products for different markets.<br />
+                <i
+                  >Tech: DDD, Event-driven Architecture, Reactive Programming,
+                  TDD, BDD</i
+                >
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img
+              src="https://cdn.simpleicons.org/cognizant/00c7fd"
+              alt="Cognizant logo"
+            />
+            <div class="card-content">
+              <h4>Programmer Analyst, Cognizant</h4>
+              <p>
+                <b>01/2023 – 01/2024 | Chennai, Tamil Nadu</b><br />
+                Internship & Full-Time (offer delayed due to restructuring).<br />
+                • Built RESTful APIs using Spring Boot with AWS Lambda and API
+                Gateway.<br />
+                • Contributed to POCs using AWS services like S3, DynamoDB, and
+                CloudWatch.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects (auto-fetched) -->
+      <section
+        class="sec"
+        id="projects-section"
+        aria-labelledby="projects-title"
+      >
+        <a id="projects" class="anch" aria-hidden="true"></a>
+        <h3 class="section-title" id="projects-title">Projects</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <p id="projects-status" class="muted" style="margin-top: 8px">
+          Loading projects…
+        </p>
+        <div class="portfolio-grid" id="projects-grid" aria-live="polite"></div>
+      </section>
+
+      <!-- Skills -->
+      <section class="sec" id="skills" aria-labelledby="skills-title">
+        <h3 class="section-title" id="skills-title">Skills</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="skills-list" role="list">
+          <span class="skill" role="listitem">Java SE</span>
+          <span class="skill" role="listitem">Spring Boot</span>
+          <span class="skill" role="listitem">Spring WebFlux</span>
+          <span class="skill" role="listitem">REST &amp; GraphQL APIs</span>
+          <span class="skill" role="listitem">Microservices</span>
+          <span class="skill" role="listitem">C++</span>
+          <span class="skill" role="listitem">TypeScript</span>
+          <span class="skill" role="listitem">SQL</span>
+          <span class="skill" role="listitem">Cassandra</span>
+          <span class="skill" role="listitem">MySQL</span>
+          <span class="skill" role="listitem">MongoDB</span>
+          <span class="skill" role="listitem">PostgreSQL</span>
+          <span class="skill" role="listitem">Kafka</span>
+          <span class="skill" role="listitem">AWS</span>
+          <span class="skill" role="listitem">Jenkins</span>
+          <span class="skill" role="listitem">GitHub Actions</span>
+          <span class="skill" role="listitem">Docker</span>
+          <span class="skill" role="listitem">Kubernetes</span>
+          <span class="skill" role="listitem">OOP</span>
+          <span class="skill" role="listitem">TDD/BDD</span>
+          <span class="skill" role="listitem">JUnit</span>
+          <span class="skill" role="listitem">Cucumber</span>
+          <span class="skill" role="listitem">Problem Solving</span>
+        </div>
+      </section>
+
+      <!-- Achievements -->
+      <section class="sec" id="achievements" aria-labelledby="achv-title">
+        <a id="achv" class="anch" aria-hidden="true"></a>
+        <h3 class="section-title" id="achv-title">Achievements</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <ul class="list" style="margin-top: 10px">
+          <li>
+            Secured 2nd place in the Infosys Hackathon by developing a talent
+            acquisition solution.
+          </li>
+          <li>
+            Achieved a LeetCode rating of 1872 and earned the Knight Badge (top
+            5% of all users).
+          </li>
+        </ul>
+      </section>
+
+      <!-- Education -->
+      <section class="sec" id="education" aria-labelledby="edu-title">
+        <a id="edu" class="anch" aria-hidden="true"></a>
+        <h3 class="section-title" id="edu-title">Education</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="about" style="align-items: flex-start">
+          <img
+            class="logo"
+            src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.NfQQ8GXpl4kaEt-Gmte_6wHaCn%3Fr%3D0%26pid%3DApi&sp=1753828000T926d4b0cf5b86095c2885e3f31b9fe0f836703451c2875fed79ade20c202524a"
+            alt="LNCT logo"
+          />
+          <div class="about-card">
+            <b>Lakshmi Narain College Of Technology</b><br />
+            Bachelor Of Technology | Computer Science Engineering<br />
+            <span>05/2023 | Bhopal, Madhya Pradesh</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="sec" id="contact" aria-labelledby="contact-title">
+        <h3 class="section-title" id="contact-title">Contact</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <!-- Keep your original fields; give the form an id -->
+        <form
+          class="contact-form"
+          id="contactFormEmailJS"
+          onsubmit="return false;"
+        >
+          <h4 class="sr-only">Contact form</h4>
+          <input
+            type="text"
+            name="from_name"
+            placeholder="Your Name"
+            required
+          />
+          <input
+            type="email"
+            name="reply_to"
+            placeholder="Your Email"
+            required
+          />
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Your Message"
+            required
+          ></textarea>
+          <button type="submit" id="contactSubmitEmailJS">Send Message</button>
+          <p
+            id="contactStatusEmailJS"
+            class="muted"
+            style="margin-top: 0.6rem"
+          ></p>
+        </form>
+      </section>
+    </main>
+
+    <footer role="contentinfo">© 2025 Shubh Gupta. All Rights Reserved.</footer>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+      (function () {
+        // 1) Init with your public key
+        emailjs.init("ba_tX09M9-yxsoWnK");
+
+        const form = document.getElementById("contactFormEmailJS");
+        const submit = document.getElementById("contactSubmitEmailJS");
+        const status = document.getElementById("contactStatusEmailJS");
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          status.textContent = "";
+          submit.disabled = true;
+          submit.textContent = "Sending…";
+
+          try {
+            // Read fields
+            const formData = new FormData(form);
+
+            const name = (
+              formData.get("from_name") ||
+              formData.get("name") ||
+              "Website Visitor"
+            ).trim();
+            const email = (
+              formData.get("reply_to") ||
+              formData.get("email") ||
+              ""
+            ).trim();
+            const title = (
+              formData.get("subject") ||
+              document.title ||
+              "Portfolio"
+            ).trim();
+            const rawMsg = (formData.get("message") || "").trim();
+
+            // Timestamp in IST (Asia/Kolkata)
+            const whenIST = new Date().toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata",
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+
+            // Compose a neat, readable body
+            const composedMessage = [
+              "📩 New portfolio inquiry",
+              "────────────────────────",
+              `Name: ${name}`,
+              `Email: ${email || "—"}`,
+              `Time (IST): ${whenIST}`,
+              "",
+              "Message:",
+              rawMsg || "(no message provided)",
+            ].join("\n");
+
+            // Subject line
+            const subject = `Portfolio Inquiry • ${title} • ${whenIST}`;
+
+            // Final EmailJS params (use these variables in your EmailJS template)
+            const params = {
+              from_name: name,
+              reply_to: email,
+              subject, // add {{subject}} in your template if desired
+              message: composedMessage, // add {{message}} in your template body
+              to_email: "shubhgupta036@gmail.com",
+            };
+
+            // 2) Use your EmailJS service & template IDs
+            await emailjs.send("service_bezinql", "template_0in6erd", params);
+
+            form.reset();
+            status.style.color = "#9be09b";
+            status.textContent = "Thanks! Your message was sent successfully.";
+          } catch (err) {
+            console.error(err);
+            status.style.color = "#f88";
+            status.textContent =
+              "Could not send the message. Please try again later.";
+            alert("Send failed: " + (err?.text || err?.message || err));
+          } finally {
+            submit.disabled = false;
+            submit.textContent = "Send Message";
+          }
+        });
+      })();
+    </script>
+
+    <script>
+      (async function loadRepos() {
+        const grid = document.getElementById("projects-grid");
+        const status = document.getElementById("projects-status");
+
+        const username = "ShubhGupta25";
+        const baseUrl = `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`;
+
+        // Toggle filters here
+        const EXCLUDE_FORKS = true;
+        const EXCLUDE_ARCHIVED = true;
+
+        // Helpers
+        const ogImage = (fullName) =>
+          `https://opengraph.githubassets.com/1/${fullName}`;
+        const fallbackImg = (seed) =>
+          `https://picsum.photos/seed/${encodeURIComponent(
+            seed || "project"
+          )}/1200/600`;
+        const fmtDate = (iso) => {
+          try {
+            const d = new Date(iso);
+            return d.toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            });
+          } catch {
+            return iso || "";
+          }
+        };
+
+        async function fetchAll(url) {
+          // For most users, per_page=100 is enough; still, we’ll chase "next" if present.
+          const all = [];
+          let next = url;
+
+          while (next) {
+            const res = await fetch(next, {
+              headers: {
+                Accept: "application/vnd.github+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+                // "Authorization": "Bearer YOUR_TOKEN_HERE", // ← Optional: add if you hit rate limits
+                "User-Agent": username,
+              },
+            });
+
+            if (!res.ok) {
+              const msg = `GitHub API error: ${res.status} ${res.statusText}`;
+              throw new Error(msg);
+            }
+
+            const page = await res.json();
+            all.push(...page);
+
+            // Parse Link header for pagination
+            const link = res.headers.get("Link");
+            if (link && link.includes('rel="next"')) {
+              const m = link.split(",").find((p) => p.includes('rel="next"'));
+              next = m ? m.split(";")[0].trim().slice(1, -1) : null;
+            } else {
+              next = null;
+            }
+
+            // Show rate limit warning if close to limit (unauthenticated limit is 60/hour)
+            const remain = res.headers.get("X-RateLimit-Remaining");
+            if (remain !== null && Number(remain) <= 2) {
+              console.warn("GitHub rate limit low. Consider adding a token.");
+            }
+          }
+          return all;
+        }
+
+        try {
+          status.textContent = "Loading projects…";
+          const repos = await fetchAll(baseUrl);
+
+          // Filter and sort
+          let filtered = repos
+            .filter((r) => !EXCLUDE_ARCHIVED || !r.archived)
+            .filter((r) => !EXCLUDE_FORKS || !r.fork);
+
+          filtered.sort(
+            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+          );
+
+          // Build HTML
+          const html = filtered
+            .map((r) => {
+              const title = r.name || r.full_name;
+              const desc =
+                r.description && r.description.trim()
+                  ? r.description
+                  : "No description provided.";
+              const img = ogImage(r.full_name);
+              const repoUrl = r.html_url;
+              const live = r.homepage && r.homepage.trim() ? r.homepage : "";
+              const lang = r.language || "—";
+              const stars = r.stargazers_count || 0;
+              const updated = r.updated_at ? fmtDate(r.updated_at) : "";
+
+              return `
+          <div class="card">
+            <a href="${repoUrl}" target="_blank" rel="noopener">
+              <img src="${img}" alt="${title}" onerror="this.src='${fallbackImg(
+                title
+              )}'">
+            </a>
+            <div class="card-content">
+              <h4>${title}</h4>
+              <p>${desc}</p>
+
+              <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+                <span class="skill" style="cursor:default;">${lang}</span>
+                <span style="color:#bbb; font-size:.95rem;">★ ${stars}</span>
+                ${
+                  updated
+                    ? `<span style="color:#888; font-size:.9rem;">Updated: ${updated}</span>`
+                    : ``
+                }
+              </div>
+
+              <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+                <a href="${repoUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
+                  <span style="display:inline-block;padding:10px 16px;border-radius:24px;background:var(--gradient);font-weight:700;font-size:.95rem;">Repo</span>
+                </a>
+                ${
+                  live
+                    ? `
+                <a href="${live}" target="_blank" rel="noopener" style="text-decoration:none;">
+                  <span style="display:inline-block;padding:10px 16px;border-radius:24px;background:var(--gradient);font-weight:700;font-size:.95rem;">Live</span>
+                </a>`
+                    : ``
+                }
+              </div>
+            </div>
+          </div>
+        `;
+            })
+            .join("");
+
+          grid.innerHTML =
+            html || `<p style="color:#bbb;">No projects to show yet.</p>`;
+          status.textContent = ""; // clear loader
+        } catch (err) {
+          console.error(err);
+          status.innerHTML = `
+        <div style="color:#f88;">
+          Couldn’t load projects from GitHub. ${err.message || ""}<br/>
+          You can try again later, or add a GitHub token in the script headers to avoid rate limits.
+        </div>`;
+        }
+      })();
+    </script>
+  </body>
+</html>
