@@ -640,13 +640,168 @@
           gap: 12px;
         }
       }
+
+      /* --- Burger button base (hidden on desktop) --- */
+      .nav-toggle {
+        display: none;
+        appearance: none;
+        background: transparent;
+        border: 0;
+        padding: 10px;
+        margin-left: auto;
+        cursor: pointer;
+        border-radius: 10px;
+        outline-offset: 3px;
+      }
+      .nav-toggle:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.6);
+      }
+
+      /* Icon bars */
+      .nav-toggle__bar {
+        display: block;
+        width: 26px;
+        height: 2px;
+        margin: 6px 0;
+        background: currentColor;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+        color: #fff;
+      }
+
+      /* --- Mobile layout --- */
+      @media (max-width: 840px) {
+        /* show burger */
+        .nav-toggle {
+          display: inline-block;
+        }
+
+        /* stack header pieces neatly */
+        .hdr__inner {
+          gap: 10px;
+        }
+
+        /* nav becomes a panel */
+        .nav {
+          position: fixed;
+          top: var(
+            --hdr-height,
+            64px
+          ); /* fallback if you don’t have this var */
+          right: 0;
+          left: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 16px 18px 20px;
+          background: rgba(12, 12, 20, 0.94);
+          backdrop-filter: blur(8px);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          transform: translateY(-10px);
+          opacity: 0;
+          pointer-events: none;
+          visibility: hidden;
+          transition: transform 0.2s ease, opacity 0.2s ease,
+            visibility 0s linear 0.2s;
+          z-index: 999; /* under header but above content */
+        }
+        .nav a {
+          padding: 10px 6px;
+          font-size: 1.05rem;
+          border-radius: 8px;
+        }
+        .nav a:active {
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* when open */
+        body.nav-open .nav {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+          visibility: visible;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        /* prevent page scroll when menu open */
+        body.nav-open {
+          overflow: hidden;
+        }
+
+        /* dim backdrop behind panel */
+        body.nav-open::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.45);
+          backdrop-filter: blur(1px);
+          z-index: 998;
+        }
+
+        /* animate burger into X */
+        body.nav-open .nav-toggle__bar:nth-child(1) {
+          transform: translateY(8px) rotate(45deg);
+        }
+        body.nav-open .nav-toggle__bar:nth-child(2) {
+          opacity: 0;
+        }
+        body.nav-open .nav-toggle__bar:nth-child(3) {
+          transform: translateY(-8px) rotate(-45deg);
+        }
+      }
+
+      .hdr {
+        --hdr-height: 70px;
+      }
+
+      /* Center the About image & content on small screens */
+      @media (max-width: 720px) {
+        /* Stack vertically and center */
+        .about {
+          flex-direction: column; /* image on top, text below (your markup already has image first) */
+          align-items: center; /* center items horizontally */
+          gap: 22px; /* a bit tighter spacing on mobile */
+          text-align: center; /* center the text block */
+        }
+
+        /* Center the avatar itself */
+        .about img {
+          margin: 0 auto; /* horizontally center */
+          width: 220px; /* slightly smaller on mobile (tweak as you like) */
+        }
+
+        /* Keep the card narrow enough and centered */
+        .about-card {
+          width: 100%;
+          max-width: 560px; /* prevents super-wide lines on large phones/phablets */
+        }
+      }
+
+      /* (Optional) If the header is fixed, make anchor jumps land below it on mobile too */
+      @media (max-width: 720px) {
+        :target {
+          scroll-margin-top: 90px;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="hdr" role="banner">
       <div class="hdr__inner">
         <h1 class="brand">Shubh Gupta</h1>
-        <nav class="nav" aria-label="Primary">
+
+        <!-- Burger button -->
+        <button
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+          aria-label="Open menu"
+        >
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+
+        <nav class="nav" id="primary-nav" aria-label="Primary">
           <a href="#home" aria-current="page">Home</a>
           <a href="#about">About</a>
           <a href="#projects-section">Projects</a>
@@ -1154,6 +1309,60 @@
           You can try again later, or add a GitHub token in the script headers to avoid rate limits.
         </div>`;
         }
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const body = document.body;
+        const btn = document.querySelector(".nav-toggle");
+        const nav = document.getElementById("primary-nav");
+
+        if (!btn || !nav) return;
+
+        function setOpen(open) {
+          btn.setAttribute("aria-expanded", String(open));
+          body.classList.toggle("nav-open", open);
+          if (open) {
+            // focus first link for keyboard users
+            const first = nav.querySelector(
+              'a, button, [tabindex]:not([tabindex="-1"])'
+            );
+            if (first) first.focus({ preventScroll: true });
+          } else {
+            // return focus to button
+            btn.focus({ preventScroll: true });
+          }
+        }
+
+        btn.addEventListener("click", () => {
+          const isOpen = body.classList.contains("nav-open");
+          setOpen(!isOpen);
+        });
+
+        // Close on Escape
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && body.classList.contains("nav-open")) {
+            setOpen(false);
+          }
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!body.classList.contains("nav-open")) return;
+          const within =
+            e.target === nav ||
+            nav.contains(e.target) ||
+            e.target === btn ||
+            btn.contains(e.target);
+          if (!within) setOpen(false);
+        });
+
+        // Optional: close when a nav link is clicked
+        nav.addEventListener("click", (e) => {
+          const t = e.target.closest("a");
+          if (t) setOpen(false);
+        });
       })();
     </script>
   </body>
