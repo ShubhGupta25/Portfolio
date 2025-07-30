@@ -1,10 +1,10 @@
-/* app.js
-   Builds the entire portfolio DOM from data, and wires up interactions.
-   - Update 'siteData' below to change content.
+/* app.js (updated)
+   - Uses siteData from localStorage if available; falls back to DEFAULT_SITE_DATA.
+   - Builds the entire portfolio DOM and wires up interactions.
 */
 
-// ------------------ DATA ------------------ //
-const siteData = {
+// ------------------ DEFAULT DATA ------------------ //
+const DEFAULT_SITE_DATA = {
   meta: {
     name: "Shubh Gupta",
     tagline: "Java Developer | Microservices | Spring Boot | Cloud Enthusiast",
@@ -79,29 +79,9 @@ Internship & Full-Time (offer delayed due to restructuring).<br />
     },
   ],
   skills: [
-    "Java SE",
-    "Spring Boot",
-    "Spring WebFlux",
-    "REST & GraphQL APIs",
-    "Microservices",
-    "C++",
-    "TypeScript",
-    "SQL",
-    "Cassandra",
-    "MySQL",
-    "MongoDB",
-    "PostgreSQL",
-    "Kafka",
-    "AWS",
-    "Jenkins",
-    "GitHub Actions",
-    "Docker",
-    "Kubernetes",
-    "OOP",
-    "TDD/BDD",
-    "JUnit",
-    "Cucumber",
-    "Problem Solving",
+    "Java SE","Spring Boot","Spring WebFlux","REST & GraphQL APIs","Microservices","C++",
+    "TypeScript","SQL","Cassandra","MySQL","MongoDB","PostgreSQL","Kafka","AWS",
+    "Jenkins","GitHub Actions","Docker","Kubernetes","OOP","TDD/BDD","JUnit","Cucumber","Problem Solving"
   ],
   achievements: [
     "Secured 2nd place in the Infosys Hackathon by developing a talent acquisition solution.",
@@ -120,8 +100,7 @@ Internship & Full-Time (offer delayed due to restructuring).<br />
       issuer: "Coursera • Specialization",
       meta: "Issued: Feb 2024 • Credential ID: ABCD-1234",
       tags: ["Spring Boot", "Microservices", "Kafka"],
-      verify:
-        "https://www.coursera.org/account/accomplishments/verify/ABCD1234",
+      verify: "https://www.coursera.org/account/accomplishments/verify/ABCD1234",
     },
     {
       img: "https://cdn.simpleicons.org/udemy/A435F0",
@@ -145,7 +124,8 @@ Internship & Full-Time (offer delayed due to restructuring).<br />
       avatar: "https://i.pravatar.cc/120?img=14",
       name: "Priya Sharma",
       title: "Engineering Manager • American Express",
-      text: "Shubh ramped up quickly on a complex legacy modernization project and consistently delivered high‑quality, well‑tested microservices. His ownership and calm under pressure made him the go‑to engineer for critical paths.",
+      text:
+        "Shubh ramped up quickly on a complex legacy modernization project and consistently delivered high‑quality, well‑tested microservices. His ownership and calm under pressure made him the go‑to engineer for critical paths.",
       tags: ["Ownership", "Spring Boot", "Kafka"],
     },
   ],
@@ -164,14 +144,25 @@ Internship & Full-Time (offer delayed due to restructuring).<br />
   },
 };
 
-// --------------- HELPERS --------------- //
+// Prefer persisted siteData from localStorage
+let siteData;
+try {
+  const saved = localStorage.getItem("siteData");
+  siteData = saved ? JSON.parse(saved) : DEFAULT_SITE_DATA;
+} catch {
+  siteData = DEFAULT_SITE_DATA;
+}
+
+// Expose for debugging if needed
+window.__siteData = siteData;
+
+// ------------------ HELPERS & RENDERERS ------------------ //
 const h = (tag, attrs = {}, children = []) => {
   const el = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
     if (k === "class") el.className = v;
     else if (k === "style") el.setAttribute("style", v);
-    else if (k.startsWith("on") && typeof v === "function")
-      el.addEventListener(k.slice(2), v);
+    else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
     else if (v !== null && v !== undefined) el.setAttribute(k, v);
   }
   const append = (c) => {
@@ -184,38 +175,25 @@ const h = (tag, attrs = {}, children = []) => {
   return el;
 };
 
-// --------------- RENDERERS --------------- //
 function renderHeader() {
   const navLinks = siteData.nav.map((n) =>
-    h(
-      "a",
-      { href: n.href, ...(n.current ? { "aria-current": "page" } : {}) },
-      n.label
-    )
+    h("a", { href: n.href, ...(n.current ? { "aria-current": "page" } : {}) }, n.label)
   );
 
   const header = h("header", { class: "hdr", role: "banner" }, [
     h("div", { class: "hdr__inner" }, [
       h("h1", { class: "brand" }, siteData.meta.name),
-      h(
-        "button",
-        {
-          class: "nav-toggle",
-          "aria-expanded": "false",
-          "aria-controls": "primary-nav",
-          "aria-label": "Open menu",
-        },
-        [
-          h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
-          h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
-          h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
-        ]
-      ),
-      h(
-        "nav",
-        { class: "nav", id: "primary-nav", "aria-label": "Primary" },
-        navLinks
-      ),
+      h("button", {
+        class: "nav-toggle",
+        "aria-expanded": "false",
+        "aria-controls": "primary-nav",
+        "aria-label": "Open menu",
+      }, [
+        h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
+        h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
+        h("span", { class: "nav-toggle__bar", "aria-hidden": "true" }),
+      ]),
+      h("nav", { class: "nav", id: "primary-nav", "aria-label": "Primary" }, navLinks),
     ]),
   ]);
   return header;
@@ -227,42 +205,34 @@ function renderHero() {
       h("img", { src: s.img, alt: s.alt }),
     ])
   );
-  const hero = h(
-    "section",
-    { class: "hero sec", id: "home", "aria-labelledby": "hero-title" },
-    [
-      h("h2", { id: "hero-title" }, [
-        h("span", { id: "typewriter", class: "tw" }, "Hi, I'm Shubh Gupta"),
-        h("span", { class: "tw-caret", "aria-hidden": "true" }),
-      ]),
-      h("p", {}, siteData.meta.tagline),
-      h("div", { class: "buttons" }, [
-        h("a", { href: "#projects" }, "View Projects"),
-        h("a", { href: "#contact" }, "Contact Me"),
-      ]),
-      h("div", { class: "socials", "aria-label": "Social links" }, socialEls),
-    ]
-  );
+  const hero = h("section", { class: "hero sec", id: "home", "aria-labelledby": "hero-title" }, [
+    h("h2", { id: "hero-title" }, [
+      h("span", { id: "typewriter", class: "tw" }, "Hi, I'm Shubh Gupta"),
+      h("span", { class: "tw-caret", "aria-hidden": "true" }),
+    ]),
+    h("p", {}, siteData.meta.tagline),
+    h("div", { class: "buttons" }, [
+      h("a", { href: "#projects" }, "View Projects"),
+      h("a", { href: "#contact" }, "Contact Me"),
+    ]),
+    h("div", { class: "socials", "aria-label": "Social links" }, socialEls),
+  ]);
   return hero;
 }
 
 function renderAbout() {
-  return h(
-    "section",
-    { class: "sec", id: "about", "aria-labelledby": "about-title" },
-    [
-      h("a", { id: "about", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "about-title" }, "About"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "about" }, [
-        h("img", { src: siteData.about.avatar, alt: "Shubh Gupta avatar" }),
-        h("div", { class: "about-card" }, [
-          h("h3", {}, "About Me"),
-          h("p", {}, siteData.about.text),
-        ]),
+  return h("section", { class: "sec", id: "about", "aria-labelledby": "about-title" }, [
+    h("a", { id: "about", class: "anch", "aria-hidden": "true" }),
+    h("h3", { class: "section-title", id: "about-title" }, "About"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "about" }, [
+      h("img", { src: siteData.about.avatar, alt: "Shubh Gupta avatar" }),
+      h("div", { class: "about-card" }, [
+        h("h3", {}, "About Me"),
+        h("p", {}, siteData.about.text),
       ]),
-    ]
-  );
+    ]),
+  ]);
 }
 
 function renderExperience() {
@@ -275,147 +245,74 @@ function renderExperience() {
       ]),
     ])
   );
-  return h(
-    "section",
-    { class: "sec", id: "portfolio", "aria-labelledby": "exp-title" },
-    [
-      h("a", { id: "exp", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "exp-title" }, "Experience"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "portfolio-grid" }, cards),
-    ]
-  );
+  return h("section", { class: "sec", id: "portfolio", "aria-labelledby": "exp-title" }, [
+    h("a", { id: "exp", class: "anch", "aria-hidden": "true" }),
+    h("h3", { class: "section-title", id: "exp-title" }, "Experience"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "portfolio-grid" }, cards),
+  ]);
 }
 
 function renderProjects() {
-  return h(
-    "section",
-    {
-      class: "sec",
-      id: "projects-section",
-      "aria-labelledby": "projects-title",
-    },
-    [
-      h("a", { id: "projects", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "projects-title" }, "Projects"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h(
-        "p",
-        { id: "projects-status", class: "muted", style: "margin-top: 8px" },
-        "Loading projects…"
-      ),
-      h("div", {
-        class: "portfolio-grid",
-        id: "projects-grid",
-        "aria-live": "polite",
-      }),
-    ]
-  );
+  return h("section", { class: "sec", id: "projects-section", "aria-labelledby": "projects-title" }, [
+    h("a", { id: "projects", class: "anch", "aria-hidden": "true" }),
+    h("h3", { class: "section-title", id: "projects-title" }, "Projects"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("p", { id: "projects-status", class: "muted", style: "margin-top: 8px" }, "Loading projects…"),
+    h("div", { class: "portfolio-grid", id: "projects-grid", "aria-live": "polite" }),
+  ]);
 }
 
 function renderSkills() {
-  const items = siteData.skills.map((s) =>
-    h("span", { class: "skill", role: "listitem" }, s)
-  );
-  return h(
-    "section",
-    { class: "sec", id: "skills", "aria-labelledby": "skills-title" },
-    [
-      h("h3", { class: "section-title", id: "skills-title" }, "Skills"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "skills-list", role: "list" }, items),
-    ]
-  );
+  const items = siteData.skills.map((s) => h("span", { class: "skill", role: "listitem" }, s));
+  return h("section", { class: "sec", id: "skills", "aria-labelledby": "skills-title" }, [
+    h("h3", { class: "section-title", id: "skills-title" }, "Skills"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "skills-list", role: "list" }, items),
+  ]);
 }
 
 function renderAchievements() {
   const lis = siteData.achievements.map((a) => h("li", {}, a));
-  return h(
-    "section",
-    { class: "sec", id: "achievements", "aria-labelledby": "achv-title" },
-    [
-      h("a", { id: "achv", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "achv-title" }, "Achievements"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("ul", { class: "list", style: "margin-top: 10px" }, lis),
-    ]
-  );
+  return h("section", { class: "sec", id: "achievements", "aria-labelledby": "achv-title" }, [
+    h("a", { id: "achv", class: "anch", "aria-hidden": "true" }),
+    h("h3", { class: "section-title", id: "achv-title" }, "Achievements"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("ul", { class: "list", style: "margin-top: 10px" }, lis),
+  ]);
 }
 
 function renderEducation() {
-  return h(
-    "section",
-    { class: "sec", id: "education", "aria-labelledby": "edu-title" },
-    [
-      h("a", { id: "edu", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "edu-title" }, "Education"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "about", style: "align-items: flex-start" }, [
-        h("img", {
-          class: "logo",
-          src: siteData.education.logo,
-          alt: "LNCT logo",
-        }),
-        h("div", { class: "about-card" }, [
-          h("b", {}, siteData.education.headline),
-          "<br />",
-          siteData.education.details,
-          "<br />",
-          h("span", {}, siteData.education.meta),
-        ]),
+  return h("section", { class: "sec", id: "education", "aria-labelledby": "edu-title" }, [
+    h("a", { id: "edu", class: "anch", "aria-hidden": "true" }),
+    h("h3", { class: "section-title", id: "edu-title" }, "Education"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "about", style: "align-items: flex-start" }, [
+      h("img", { class: "logo", src: siteData.education.logo, alt: "LNCT logo" }),
+      h("div", { class: "about-card" }, [
+        h("b", {}, siteData.education.headline),
+        "<br />",
+        siteData.education.details,
+        "<br />",
+        h("span", {}, siteData.education.meta),
       ]),
-    ]
-  );
+    ]),
+  ]);
 }
 
 function renderContact() {
-  return h(
-    "section",
-    { class: "sec", id: "contact", "aria-labelledby": "contact-title" },
-    [
-      h("h3", { class: "section-title", id: "contact-title" }, "Contact"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h(
-        "form",
-        {
-          class: "contact-form",
-          id: "contactFormEmailJS",
-          onsubmit: (e) => e.preventDefault(),
-        },
-        [
-          h("h4", { class: "sr-only" }, "Contact form"),
-          h("input", {
-            type: "text",
-            name: "from_name",
-            placeholder: "Your Name",
-            required: "",
-          }),
-          h("input", {
-            type: "email",
-            name: "reply_to",
-            placeholder: "Your Email",
-            required: "",
-          }),
-          h("textarea", {
-            name: "message",
-            rows: "5",
-            placeholder: "Your Message",
-            required: "",
-          }),
-          h(
-            "button",
-            { type: "submit", id: "contactSubmitEmailJS" },
-            "Send Message"
-          ),
-          h("p", {
-            id: "contactStatusEmailJS",
-            class: "muted",
-            style: "margin-top: 0.6rem",
-          }),
-        ]
-      ),
-    ]
-  );
+  return h("section", { class: "sec", id: "contact", "aria-labelledby": "contact-title" }, [
+    h("h3", { class: "section-title", id: "contact-title" }, "Contact"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("form", { class: "contact-form", id: "contactFormEmailJS", onsubmit: (e)=> e.preventDefault() }, [
+      h("h4", { class: "sr-only" }, "Contact form"),
+      h("input", { type: "text", name: "from_name", placeholder: "Your Name", required: "" }),
+      h("input", { type: "email", name: "reply_to", placeholder: "Your Email", required: "" }),
+      h("textarea", { name: "message", rows: "5", placeholder: "Your Message", required: "" }),
+      h("button", { type: "submit", id: "contactSubmitEmailJS" }, "Send Message"),
+      h("p", { id: "contactStatusEmailJS", class: "muted", style: "margin-top: 0.6rem" }),
+    ]),
+  ]);
 }
 
 function renderCertificates() {
@@ -424,55 +321,23 @@ function renderCertificates() {
       h("img", { src: c.img, alt: `${c.title.split(" ")[0]} logo` }),
       h("div", { class: "card-content" }, [
         h("h4", {}, c.title),
-        h(
-          "p",
-          {},
-          `Issuer: ${c.issuer}<br /><span class="muted"> ${c.meta} </span>`
+        h("p", {}, `Issuer: ${c.issuer}<br /><span class="muted"> ${c.meta} </span>`),
+        h("div", { style: "margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;" },
+          c.tags.map((t) => h("span", { class: "skill", style: "cursor: default" }, t))
         ),
-        h(
-          "div",
-          { style: "margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;" },
-          c.tags.map((t) =>
-            h("span", { class: "skill", style: "cursor: default" }, t)
-          )
-        ),
-        h(
-          "div",
-          { style: "margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;" },
-          [
-            h(
-              "a",
-              {
-                href: c.verify,
-                target: "_blank",
-                rel: "noopener",
-                style: "text-decoration:none;",
-              },
-              [
-                h(
-                  "span",
-                  {
-                    style:
-                      "display:inline-block; padding:10px 16px; border-radius:24px; background: var(--gradient); font-weight:700; font-size:.95rem;",
-                  },
-                  "Verify"
-                ),
-              ]
-            ),
-          ]
-        ),
+        h("div", { style: "margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;" }, [
+          h("a", { href: c.verify, target: "_blank", rel: "noopener", style: "text-decoration:none;" }, [
+            h("span", { style: "display:inline-block; padding:10px 16px; border-radius:24px; background: var(--gradient); font-weight:700; font-size:.95rem;" }, "Verify")
+          ])
+        ]),
       ]),
     ])
   );
-  return h(
-    "section",
-    { class: "sec", id: "certificates", "aria-labelledby": "certs-title" },
-    [
-      h("h3", { class: "section-title", id: "certs-title" }, "Certificates"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "portfolio-grid" }, cards),
-    ]
-  );
+  return h("section", { class: "sec", id: "certificates", "aria-labelledby": "certs-title" }, [
+    h("h3", { class: "section-title", id: "certs-title" }, "Certificates"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "portfolio-grid" }, cards),
+  ]);
 }
 
 function renderRecommendations() {
@@ -489,30 +354,18 @@ function renderRecommendations() {
         h("span", { class: "rec__quote-mark", "aria-hidden": "true" }, "“"),
         h("p", { class: "rec__text" }, r.text),
       ]),
-      h(
-        "div",
-        { class: "rec__tags" },
-        r.tags.map((t) => h("span", { class: "skill", role: "listitem" }, t))
-      ),
+      h("div", { class: "rec__tags" }, r.tags.map((t) => h("span", { class: "skill", role: "listitem" }, t))),
     ])
   );
-  return h(
-    "section",
-    { class: "sec", id: "recommendations", "aria-labelledby": "recs-title" },
-    [
-      h("h3", { class: "section-title", id: "recs-title" }, "Recommendations"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "recs-rail", role: "list" }, cards),
-    ]
-  );
+  return h("section", { class: "sec", id: "recommendations", "aria-labelledby": "recs-title" }, [
+    h("h3", { class: "section-title", id: "recs-title" }, "Recommendations"),
+    h("div", { class: "section-divider", "aria-hidden": "true" }),
+    h("div", { class: "recs-rail", role: "list" }, cards),
+  ]);
 }
 
 function renderFooter() {
-  return h(
-    "footer",
-    { role: "contentinfo" },
-    "© 2025 Shubh Gupta. All Rights Reserved."
-  );
+  return h("footer", { role: "contentinfo" }, "© 2025 Shubh Gupta. All Rights Reserved.");
 }
 
 function renderMain() {
@@ -542,7 +395,7 @@ function renderMain() {
 
 // EmailJS contact form handling
 (function () {
-  // Wait for DOM (defer ensures this runs after mount)
+  if (!window.emailjs) return;
   emailjs.init(siteData.contact.emailJs.publicKey);
 
   const form = document.getElementById("contactFormEmailJS");
@@ -559,9 +412,7 @@ function renderMain() {
 
     try {
       const formData = new FormData(form);
-      const name = (formData.get("from_name") || "Website Visitor")
-        .toString()
-        .trim();
+      const name = (formData.get("from_name") || "Website Visitor").toString().trim();
       const email = (formData.get("reply_to") || "").toString().trim();
       const title = document.title || "Portfolio";
       const rawMsg = (formData.get("message") || "").toString().trim();
@@ -597,11 +448,7 @@ function renderMain() {
         to_email: siteData.contact.emailTo,
       };
 
-      await emailjs.send(
-        siteData.contact.emailJs.serviceId,
-        siteData.contact.emailJs.templateId,
-        params
-      );
+      await emailjs.send(siteData.contact.emailJs.serviceId, siteData.contact.emailJs.templateId, params);
 
       form.reset();
       status.style.color = "#9be09b";
@@ -609,8 +456,7 @@ function renderMain() {
     } catch (err) {
       console.error(err);
       status.style.color = "#f88";
-      status.textContent =
-        "Could not send the message. Please try again later.";
+      status.textContent = "Could not send the message. Please try again later.";
       alert("Send failed: " + (err?.text || err?.message || err));
     } finally {
       submit.disabled = false;
@@ -629,20 +475,13 @@ function renderMain() {
   const { username, excludeForks, excludeArchived } = siteData.projects;
   const baseUrl = `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`;
 
-  const ogImage = (fullName) =>
-    `https://opengraph.githubassets.com/1/${fullName}`;
+  const ogImage = (fullName) => `https://opengraph.githubassets.com/1/${fullName}`;
   const fallbackImg = (seed) =>
-    `https://picsum.photos/seed/${encodeURIComponent(
-      seed || "project"
-    )}/1200/600`;
+    `https://picsum.photos/seed/${encodeURIComponent(seed || "project")}/1200/600`;
   const fmtDate = (iso) => {
     try {
       const d = new Date(iso);
-      return d.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-      });
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
     } catch {
       return iso || "";
     }
@@ -661,8 +500,7 @@ function renderMain() {
         },
       });
 
-      if (!res.ok)
-        throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
+      if (!res.ok) throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
 
       const page = await res.json();
       all.push(...page);
@@ -689,10 +527,7 @@ function renderMain() {
     const html = filtered
       .map((r) => {
         const title = r.name || r.full_name;
-        const desc =
-          r.description && r.description.trim()
-            ? r.description
-            : "No description provided.";
+        const desc = r.description && r.description.trim() ? r.description : "No description provided.";
         const img = ogImage(r.full_name);
         const repoUrl = r.html_url;
         const live = r.homepage && r.homepage.trim() ? r.homepage : "";
@@ -703,9 +538,7 @@ function renderMain() {
         return `
           <div class="card">
             <a href="${repoUrl}" target="_blank" rel="noopener">
-              <img src="${img}" alt="${title}" onerror="this.src='${fallbackImg(
-          title
-        )}'">
+              <img src="${img}" alt="${title}" onerror="this.src='${fallbackImg(title)}'">
             </a>
             <div class="card-content">
               <h4>${title}</h4>
@@ -713,11 +546,7 @@ function renderMain() {
               <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
                 <span class="skill" style="cursor:default;">${lang}</span>
                 <span style="color:#bbb; font-size:.95rem;">★ ${stars}</span>
-                ${
-                  updated
-                    ? `<span style="color:#888; font-size:.9rem;">Updated: ${updated}</span>`
-                    : ``
-                }
+                ${updated ? `<span style="color:#888; font-size:.9rem;">Updated: ${updated}</span>` : ``}
               </div>
               <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
                 <a href="${repoUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
@@ -737,8 +566,7 @@ function renderMain() {
       })
       .join("");
 
-    grid.innerHTML =
-      html || `<p style="color:#bbb;">No projects to show yet.</p>`;
+    grid.innerHTML = html || `<p style="color:#bbb;">No projects to show yet.</p>`;
     status.textContent = "";
   } catch (err) {
     console.error(err);
@@ -762,9 +590,7 @@ function renderMain() {
     btn.setAttribute("aria-expanded", String(open));
     body.classList.toggle("nav-open", open);
     if (open) {
-      const first = nav.querySelector(
-        'a, button, [tabindex]:not([tabindex="-1"])'
-      );
+      const first = nav.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
       if (first) first.focus({ preventScroll: true });
     } else {
       btn.focus({ preventScroll: true });
@@ -777,17 +603,12 @@ function renderMain() {
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && body.classList.contains("nav-open"))
-      setOpen(false);
+    if (e.key === "Escape" && body.classList.contains("nav-open")) setOpen(false);
   });
 
   document.addEventListener("click", (e) => {
     if (!body.classList.contains("nav-open")) return;
-    const within =
-      e.target === nav ||
-      nav.contains(e.target) ||
-      e.target === btn ||
-      btn.contains(e.target);
+    const within = e.target === nav || nav.contains(e.target) || e.target === btn || btn.contains(e.target);
     if (!within) setOpen(false);
   });
 
@@ -802,24 +623,17 @@ function renderMain() {
   const el = document.getElementById("typewriter");
   if (!el) return;
   const PHRASES = siteData.hero.phrases;
-  const TYPE_BASE = 130,
-    TYPE_VAR = 35,
-    DELETE_BASE = 70,
-    DELETE_VAR = 20;
-  const HOLD_AFTER_TYPE = 1200,
-    HOLD_AFTER_DELETE = 300;
+  const TYPE_BASE = 130, TYPE_VAR = 35, DELETE_BASE = 70, DELETE_VAR = 20;
+  const HOLD_AFTER_TYPE = 1200, HOLD_AFTER_DELETE = 300;
 
-  const reduceMotion =
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) {
     el.textContent = PHRASES[1] || el.textContent;
     return;
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const jitter = (base, varr) =>
-    Math.max(10, base + (Math.random() * 2 - 1) * varr);
+  const jitter = (base, varr) => Math.max(10, base + (Math.random() * 2 - 1) * varr);
 
   async function type(text) {
     el.textContent = "";
@@ -847,10 +661,4 @@ function renderMain() {
       idx++;
     }
   })();
-})();
-
-// Footer year auto-update if needed (simple example)
-(function () {
-  // If you want dynamic year, you could find footer and replace year.
-  // Leaving static © 2025 per design.
 })();
