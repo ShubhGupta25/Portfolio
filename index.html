@@ -1024,6 +1024,39 @@
           transition: none !important;
         }
       }
+
+      /* Typewriter caret: always white, blinks continuously */
+      .tw-caret {
+        display: inline-block;
+        width: 0ch;
+        margin-left: 2px;
+        border-right: 10px solid currentColor;
+        color: #fff; /* force white caret */
+        animation: tw-blink 1.1s steps(1, end) infinite;
+        height: clamp(2.2rem, 3vw, 3.4rem);
+      }
+
+      .tw {
+        letter-spacing: 0.3px;
+      }
+
+      @keyframes tw-blink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* Reduced motion users see final message, no caret */
+      @media (prefers-reduced-motion: reduce) {
+        .tw-caret {
+          display: none !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1059,7 +1092,11 @@
     <main id="main" tabindex="-1">
       <!-- Hero -->
       <section class="hero sec" id="home" aria-labelledby="hero-title">
-        <h2 id="hero-title">Hi, I'm Shubh Gupta</h2>
+        <h2 id="hero-title">
+          <span id="typewriter" class="tw">Hi, I'm Shubh Gupta</span>
+          <span class="tw-caret" aria-hidden="true"></span>
+        </h2>
+
         <p>Java Developer | Microservices | Spring Boot | Cloud Enthusiast</p>
 
         <div class="buttons">
@@ -1826,6 +1863,74 @@
           const t = e.target.closest("a");
           if (t) setOpen(false);
         });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const el = document.getElementById("typewriter");
+        if (!el) return;
+
+        // The two phrases you want to cycle
+        const PHRASES = [
+          "Hi, I'm Shubh Gupta",
+          "Java & Spring Boot Developer",
+          "I build scalable event‑driven microservices",
+          "Kafka • Spring WebFlux • AWS • DDD",
+          "Thanks for visiting my portfolio",
+        ];
+
+        // Speeds (slower, with a little human-like variance)
+        const TYPE_BASE = 130; // ms per char
+        const TYPE_VAR = 35; // +/- jitter
+        const DELETE_BASE = 70;
+        const DELETE_VAR = 20;
+
+        const HOLD_AFTER_TYPE = 1200; // pause after completing a line
+        const HOLD_AFTER_DELETE = 300; // tiny pause before next type
+
+        // Respect reduced motion: just show final message
+        const reduceMotion =
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduceMotion) {
+          el.textContent = PHRASES[1];
+          return;
+        }
+
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        const jitter = (base, varr) =>
+          Math.max(10, base + (Math.random() * 2 - 1) * varr);
+
+        async function type(text) {
+          el.textContent = "";
+          for (let i = 0; i < text.length; i++) {
+            el.textContent = text.slice(0, i + 1); // caret span follows after this, so it’s always at end
+            await sleep(jitter(TYPE_BASE, TYPE_VAR));
+          }
+        }
+
+        async function del(text) {
+          for (let i = text.length; i > 0; i--) {
+            el.textContent = text.slice(0, i - 1);
+            await sleep(jitter(DELETE_BASE, DELETE_VAR));
+          }
+          el.textContent = "";
+        }
+
+        (async function loop() {
+          let idx = 0;
+          while (true) {
+            const phrase = PHRASES[idx % PHRASES.length];
+            // type
+            await type(phrase);
+            await sleep(HOLD_AFTER_TYPE);
+            // delete
+            await del(phrase);
+            await sleep(HOLD_AFTER_DELETE);
+            idx++;
+          }
+        })();
       })();
     </script>
   </body>
