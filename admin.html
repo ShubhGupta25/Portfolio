@@ -12,10 +12,10 @@
         width: min(96vw, 1100px);
         margin: 100px auto 60px;
         background: rgba(24, 24, 36, 0.65);
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 14px;
         padding: 18px 18px 24px;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
       }
       .admin-grid {
         display: grid;
@@ -33,7 +33,7 @@
         padding: 10px 16px;
         border-radius: 999px;
         font-weight: 800;
-        letter-spacing: .4px;
+        letter-spacing: 0.4px;
         background: var(--gradient);
         color: #fff;
         text-decoration: none;
@@ -41,31 +41,55 @@
         cursor: pointer;
       }
       .btn.subtle {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
       .row {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
       }
-      .row label { font-weight: 700; }
-      textarea, input, select {
+      .row label {
+        font-weight: 700;
+      }
+      textarea,
+      input,
+      select {
         width: 100%;
         padding: 12px 12px;
         border-radius: 10px;
         background: #1f2236;
-        border: 1px solid rgba(255,255,255,.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         color: #fff;
         outline: none;
       }
-      textarea { min-height: 240px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-      .muted { color: #aab3bd; }
-      .pill { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); }
-      .hr { height: 1px; background: rgba(255,255,255,0.08); margin: 14px 0; }
-      .success { color: #9be09b; }
-      .error { color: #f88; }
-      header.hdr { position: static; }
+      textarea {
+        min-height: 240px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+      .muted {
+        color: #aab3bd;
+      }
+      .pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .hr {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 14px 0;
+      }
+      .success {
+        color: #9be09b;
+      }
+      .error {
+        color: #f88;
+      }
+      header.hdr {
+        position: static;
+      }
     </style>
     <script src="./admin.js" defer></script>
   </head>
@@ -82,23 +106,41 @@
     <main class="admin-wrap">
       <h2 class="section-title">Portfolio Data Editor</h2>
       <div class="section-divider" aria-hidden="true"></div>
-      <p class="muted">Edit your portfolio content as JSON. Validate and save to your browser. The main site reads from localStorage.</p>
+      <p class="muted">
+        Edit your portfolio content as JSON. Validate and save to your browser.
+        The main site reads from localStorage.
+      </p>
 
       <div class="admin-controls">
-        <button id="btnLoadDefaults" class="btn subtle" type="button">Load Defaults</button>
-        <button id="btnLoadSaved" class="btn subtle" type="button">Load Saved</button>
+        <button id="btnLoadDefaults" class="btn subtle" type="button">
+          Load Defaults
+        </button>
+        <button id="btnLoadSaved" class="btn subtle" type="button">
+          Load Saved
+        </button>
         <button id="btnValidate" class="btn" type="button">Validate</button>
         <button id="btnSave" class="btn" type="button">Save</button>
-        <button id="btnExport" class="btn subtle" type="button">Export JSON</button>
+        <button id="btnExport" class="btn subtle" type="button">
+          Export JSON
+        </button>
         <label class="pill">
-          <input id="fileImport" type="file" accept="application/json" style="display:none;" />
-          <span id="btnImport" style="cursor:pointer;">Import JSON</span>
+          <input
+            id="fileImport"
+            type="file"
+            accept="application/json"
+            style="display: none"
+          />
+          <span id="btnImport" style="cursor: pointer">Import JSON</span>
         </label>
         <span id="status" class="muted"></span>
       </div>
 
       <div class="admin-grid">
-        <textarea id="editor" spellcheck="false" aria-label="siteData JSON"></textarea>
+        <textarea
+          id="editor"
+          spellcheck="false"
+          aria-label="siteData JSON"
+        ></textarea>
 
         <div class="hr"></div>
 
@@ -108,15 +150,20 @@
             <label>Skill</label>
             <input id="qaSkill" placeholder="e.g., Redis" />
           </div>
-          <div style="display:flex; align-items:flex-end;">
-            <button id="btnAddSkill" class="btn" type="button">Add Skill</button>
+          <div style="display: flex; align-items: flex-end">
+            <button id="btnAddSkill" class="btn" type="button">
+              Add Skill
+            </button>
           </div>
         </div>
 
         <div class="row">
           <div>
             <label>Certificate Title</label>
-            <input id="qaCertTitle" placeholder="e.g., Kubernetes Fundamentals" />
+            <input
+              id="qaCertTitle"
+              placeholder="e.g., Kubernetes Fundamentals"
+            />
           </div>
           <div>
             <label>Issuer</label>
@@ -126,7 +173,10 @@
         <div class="row">
           <div>
             <label>Meta</label>
-            <input id="qaCertMeta" placeholder="e.g., Issued: Jan 2025 • Credential ID: XYZ" />
+            <input
+              id="qaCertMeta"
+              placeholder="e.g., Issued: Jan 2025 • Credential ID: XYZ"
+            />
           </div>
           <div>
             <label>Verify URL</label>
@@ -136,7 +186,10 @@
         <div class="row">
           <div>
             <label>Image URL (logo)</label>
-            <input id="qaCertImg" placeholder="https://cdn.simpleicons.org/kubernetes/..." />
+            <input
+              id="qaCertImg"
+              placeholder="https://cdn.simpleicons.org/kubernetes/..."
+            />
           </div>
           <div>
             <label>Tags (comma separated)</label>
@@ -144,9 +197,11 @@
           </div>
         </div>
         <div>
-          <button id="btnAddCert" class="btn" type="button">Add Certificate</button>
+          <button id="btnAddCert" class="btn" type="button">
+            Add Certificate
+          </button>
         </div>
-      
+
         <div class="hr"></div>
 
         <h3 class="section-title">Update About</h3>
@@ -157,11 +212,16 @@
           </div>
           <div>
             <label>About Text (HTML allowed)</label>
-            <input id="aboutText" placeholder="Short bio... (you can include <br /> tags)" />
+            <input
+              id="aboutText"
+              placeholder="Short bio... (you can include <br /> tags)"
+            />
           </div>
         </div>
         <div>
-          <button id="btnUpdateAbout" class="btn" type="button">Update About</button>
+          <button id="btnUpdateAbout" class="btn" type="button">
+            Update About
+          </button>
         </div>
 
         <div class="hr"></div>
@@ -170,7 +230,10 @@
         <div class="row">
           <div>
             <label>Company Logo URL</label>
-            <input id="qaExpLogo" placeholder="https://cdn.simpleicons.org/..." />
+            <input
+              id="qaExpLogo"
+              placeholder="https://cdn.simpleicons.org/..."
+            />
           </div>
           <div>
             <label>Role (e.g., Specialist Programmer, Infosys)</label>
@@ -178,13 +241,18 @@
           </div>
         </div>
         <div class="row">
-          <div style="grid-column: 1 / -1;">
+          <div style="grid-column: 1 / -1">
             <label>Description (HTML allowed)</label>
-            <textarea id="qaExpDesc" placeholder="Bullet points and meta in HTML"></textarea>
+            <textarea
+              id="qaExpDesc"
+              placeholder="Bullet points and meta in HTML"
+            ></textarea>
           </div>
         </div>
         <div>
-          <button id="btnAddExp" class="btn" type="button">Add Experience</button>
+          <button id="btnAddExp" class="btn" type="button">
+            Add Experience
+          </button>
         </div>
 
         <div class="hr"></div>
@@ -193,7 +261,10 @@
         <div class="row">
           <div>
             <label>Avatar URL</label>
-            <input id="qaRecAvatar" placeholder="https://i.pravatar.cc/120?img=14" />
+            <input
+              id="qaRecAvatar"
+              placeholder="https://i.pravatar.cc/120?img=14"
+            />
           </div>
           <div>
             <label>Name</label>
@@ -211,32 +282,41 @@
           </div>
         </div>
         <div class="row">
-          <div style="grid-column: 1 / -1;">
+          <div style="grid-column: 1 / -1">
             <label>Recommendation Text</label>
-            <textarea id="qaRecText" placeholder="Recommendation text..."></textarea>
+            <textarea
+              id="qaRecText"
+              placeholder="Recommendation text..."
+            ></textarea>
           </div>
         </div>
         <div>
-          <button id="btnAddRec" class="btn" type="button">Add Recommendation</button>
+          <button id="btnAddRec" class="btn" type="button">
+            Add Recommendation
+          </button>
         </div>
 
         <div class="hr"></div>
 
         <h3 class="section-title">Quick Add — Achievement</h3>
         <div class="row">
-          <div style="grid-column: 1 / -1;">
+          <div style="grid-column: 1 / -1">
             <label>Achievement Text</label>
             <input id="qaAchText" placeholder="e.g., Won XYZ Hackathon 2025" />
           </div>
         </div>
         <div>
-          <button id="btnAddAch" class="btn" type="button">Add Achievement</button>
+          <button id="btnAddAch" class="btn" type="button">
+            Add Achievement
+          </button>
         </div>
-
-    </div>
+      </div>
     </main>
 
-    <footer role="contentinfo" style="text-align:center; padding: 24px 0 40px; color:#888;">
+    <footer
+      role="contentinfo"
+      style="text-align: center; padding: 24px 0 40px; color: #888"
+    >
       © 2025 Shubh Gupta. Admin Panel.
     </footer>
   </body>
