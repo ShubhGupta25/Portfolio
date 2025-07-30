@@ -374,7 +374,6 @@
       #education .logo {
         width: 110px;
         border-radius: 10px;
-        background: #fff;
         padding: 8px;
         box-shadow: 0 2px 12px rgba(255, 0, 204, 0.45);
         border: none;
@@ -787,6 +786,244 @@
           scroll-margin-top: 90px;
         }
       }
+
+      /* Certificates & Recommendations small polish */
+      .muted {
+        color: #aab3bd;
+        font-size: 0.95rem;
+      }
+
+      /* Testimonial header row inside card */
+      .testimonial .testimonial__head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px 0; /* aligns nicely with your card-content padding */
+      }
+      .testimonial .testimonial__avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        object-fit: cover;
+      }
+      .testimonial .testimonial__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .testimonial .testimonial__quote {
+        margin-top: 10px;
+        font-size: 1.02rem;
+        line-height: 1.65;
+        color: #cfd3d8;
+      }
+
+      /* If you want testimonials a tad taller to fit quotes without scroll */
+      .testimonial.card {
+        height: 460px;
+      } /* matches your fixed-height pattern */
+
+      /* ================================
+   Recommendations — standout style
+   ================================ */
+      :root {
+        /* Accent set tuned for your orange-pink-blue palette */
+        --rec-c1: #ff7a18; /* orange */
+        --rec-c2: #ff00cc; /* pink */
+        --rec-c3: #00c9ff; /* blue */
+        --rec-glow: 0 0 40px rgba(255, 0, 204, 0.18),
+          0 10px 30px rgba(0, 201, 255, 0.12);
+      }
+
+      /* Horizontal snap rail */
+      .recs-rail {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: min(90%, 540px); /* card width on mobile */
+        gap: 20px;
+        overflow-x: auto;
+        padding: 8px 2px 8px 2px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .recs-rail::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* On larger screens, show 3 per row (falls back to your grid look) */
+      @media (min-width: 980px) {
+        .recs-rail {
+          grid-auto-flow: row;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          overflow: visible;
+          scroll-snap-type: none;
+          gap: 28px;
+        }
+      }
+
+      /* Card makeover */
+      .card.rec {
+        position: relative;
+        height: auto; /* let content define height on this section */
+        min-height: 290px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: radial-gradient(
+            120% 120% at -10% -10%,
+            rgba(255, 122, 24, 0.06),
+            transparent 60%
+          ),
+          radial-gradient(
+            120% 100% at 110% 110%,
+            rgba(0, 201, 255, 0.05),
+            transparent 60%
+          ),
+          rgba(24, 24, 36, 0.72);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+        scroll-snap-align: start;
+        overflow: clip;
+        isolation: isolate;
+      }
+
+      /* Animated gradient border halo */
+      .card.rec::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: conic-gradient(
+          from 180deg,
+          var(--rec-c1),
+          var(--rec-c2),
+          var(--rec-c3),
+          var(--rec-c1)
+        );
+        filter: blur(14px);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        z-index: -1;
+      }
+      .card.rec:hover::before {
+        opacity: 0.45;
+      }
+      .card.rec:hover {
+        box-shadow: var(--rec-glow);
+        transform: translateY(-4px);
+      }
+
+      /* Header row */
+      .rec__head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px 0 18px;
+      }
+      .rec__avatar {
+        width: 46% !important;
+        height: 46% !important;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.16);
+        object-fit: cover;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+      .rec__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .rec__meta strong {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .rec__meta .muted {
+        color: #aab3bd;
+        font-size: 0.93rem;
+      }
+
+      /* Body: speech-bubble effect */
+      .rec__body {
+        position: relative;
+        margin: 12px 18px 0 18px;
+        padding: 16px 16px 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        background: radial-gradient(
+            60% 100% at 0% 0%,
+            rgba(255, 0, 204, 0.06),
+            transparent 70%
+          ),
+          rgba(17, 17, 26, 0.45);
+        box-shadow: inset 0 0 36px rgba(255, 255, 255, 0.03);
+      }
+
+      /* Bubble pointer */
+      .rec__body::after {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 22px;
+        width: 14px;
+        height: 14px;
+        background: linear-gradient(
+          135deg,
+          rgba(17, 17, 26, 0.45) 0 70%,
+          transparent 70% 100%
+        );
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        transform: rotate(45deg);
+      }
+
+      /* Big opening quote */
+      .rec__quote-mark {
+        position: absolute;
+        top: -8px;
+        right: 12px;
+        font-size: 64px;
+        line-height: 0.8;
+        background: linear-gradient(90deg, var(--rec-c2), var(--rec-c3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0.25;
+        pointer-events: none;
+      }
+
+      /* Quote text */
+      .rec__text {
+        color: #e7ebef;
+        font-size: 1.05rem;
+        line-height: 1.75;
+        text-wrap: pretty;
+      }
+
+      /* Tags row */
+      .rec__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 14px 18px 18px;
+      }
+
+      /* Hover color lift on tags */
+      .card.rec .skill {
+        border: 1px solid rgba(255, 0, 204, 0.35);
+        box-shadow: 0 0 10px rgba(255, 0, 204, 0.12);
+      }
+      .card.rec .skill:hover {
+        background: linear-gradient(90deg, var(--rec-c3), var(--rec-c2));
+        color: #fff;
+        transform: translateY(-1px) scale(1.03);
+      }
+
+      /* Motion safety */
+      @media (prefers-reduced-motion: reduce) {
+        .card.rec,
+        .card.rec::before {
+          transition: none !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1018,7 +1255,7 @@
         <div class="about" style="align-items: flex-start">
           <img
             class="logo"
-            src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.NfQQ8GXpl4kaEt-Gmte_6wHaCn%3Fr%3D0%26pid%3DApi&sp=1753828000T926d4b0cf5b86095c2885e3f31b9fe0f836703451c2875fed79ade20c202524a"
+            src="https://lnct.ac.in/wp-content/uploads/2021/04/LNCT-Logo.png"
             alt="LNCT logo"
           />
           <div class="about-card">
@@ -1066,6 +1303,227 @@
             style="margin-top: 0.6rem"
           ></p>
         </form>
+      </section>
+
+      <!-- Certificates -->
+      <section class="sec" id="certificates" aria-labelledby="certs-title">
+        <h3 class="section-title" id="certs-title">Certificates</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="portfolio-grid">
+          <!-- Card 1 -->
+          <article class="card">
+            <img
+              src="https://cdn.simpleicons.org/coursera/2A73CC"
+              alt="Coursera logo"
+            />
+            <div class="card-content">
+              <h4>Microservices with Spring Boot</h4>
+              <p>
+                Issuer: Coursera • Specialization
+                <br /><span class="muted"
+                  >Issued: Feb 2024 • Credential ID: ABCD-1234</span
+                >
+              </p>
+              <div
+                style="
+                  margin-top: 12px;
+                  display: flex;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                "
+              >
+                <span class="skill" style="cursor: default">Spring Boot</span>
+                <span class="skill" style="cursor: default">Microservices</span>
+                <span class="skill" style="cursor: default">Kafka</span>
+              </div>
+              <div
+                style="
+                  margin-top: 16px;
+                  display: flex;
+                  gap: 12px;
+                  flex-wrap: wrap;
+                "
+              >
+                <a
+                  href="https://www.coursera.org/account/accomplishments/verify/ABCD1234"
+                  target="_blank"
+                  rel="noopener"
+                  style="text-decoration: none"
+                >
+                  <span
+                    style="
+                      display: inline-block;
+                      padding: 10px 16px;
+                      border-radius: 24px;
+                      background: var(--gradient);
+                      font-weight: 700;
+                      font-size: 0.95rem;
+                    "
+                    >Verify</span
+                  >
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card">
+            <img
+              src="https://cdn.simpleicons.org/udemy/A435F0"
+              alt="Udemy logo"
+            />
+            <div class="card-content">
+              <h4>Advanced Java Programming</h4>
+              <p>
+                Issuer: Udemy
+                <br /><span class="muted"
+                  >Issued: Nov 2023 • Credential ID: UDE-5678</span
+                >
+              </p>
+              <div
+                style="
+                  margin-top: 12px;
+                  display: flex;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                "
+              >
+                <span class="skill" style="cursor: default">Java</span>
+                <span class="skill" style="cursor: default"
+                  >Design Patterns</span
+                >
+                <span class="skill" style="cursor: default">JUnit</span>
+              </div>
+              <div
+                style="
+                  margin-top: 16px;
+                  display: flex;
+                  gap: 12px;
+                  flex-wrap: wrap;
+                "
+              >
+                <a
+                  href="https://www.udemy.com/certificate/UC-XXXXXX/"
+                  target="_blank"
+                  rel="noopener"
+                  style="text-decoration: none"
+                >
+                  <span
+                    style="
+                      display: inline-block;
+                      padding: 10px 16px;
+                      border-radius: 24px;
+                      background: var(--gradient);
+                      font-weight: 700;
+                      font-size: 0.95rem;
+                    "
+                    >Verify</span
+                  >
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card">
+            <img
+              src="https://cdn.simpleicons.org/amazonaws/FF9900"
+              alt="AWS logo"
+            />
+            <div class="card-content">
+              <h4>AWS Cloud Practitioner</h4>
+              <p>
+                Issuer: Amazon Web Services
+                <br /><span class="muted"
+                  >Issued: Aug 2023 • Credential ID: AWS-CLF-9999</span
+                >
+              </p>
+              <div
+                style="
+                  margin-top: 12px;
+                  display: flex;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                "
+              >
+                <span class="skill" style="cursor: default">AWS</span>
+                <span class="skill" style="cursor: default">Cloud</span>
+                <span class="skill" style="cursor: default">Security</span>
+              </div>
+              <div
+                style="
+                  margin-top: 16px;
+                  display: flex;
+                  gap: 12px;
+                  flex-wrap: wrap;
+                "
+              >
+                <a
+                  href="https://www.credly.com/badges/"
+                  target="_blank"
+                  rel="noopener"
+                  style="text-decoration: none"
+                >
+                  <span
+                    style="
+                      display: inline-block;
+                      padding: 10px 16px;
+                      border-radius: 24px;
+                      background: var(--gradient);
+                      font-weight: 700;
+                      font-size: 0.95rem;
+                    "
+                    >Verify</span
+                  >
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="sec" id="recommendations" aria-labelledby="recs-title">
+        <h3 class="section-title" id="recs-title">Recommendations</h3>
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <!-- Horizontal rail -->
+        <div class="recs-rail" role="list">
+          <!-- Each recommendation: add .rec to your .card -->
+          <article class="card rec" role="listitem">
+            <div class="rec__head">
+              <img
+                class="rec__avatar"
+                src="https://i.pravatar.cc/120?img=14"
+                alt="Priya Sharma"
+              />
+              <div class="rec__meta">
+                <strong>Priya Sharma</strong>
+                <span class="muted"
+                  >Engineering Manager • American Express</span
+                >
+              </div>
+            </div>
+
+            <div class="rec__body">
+              <span class="rec__quote-mark" aria-hidden="true">“</span>
+              <p class="rec__text">
+                Shubh ramped up quickly on a complex legacy modernization
+                project and consistently delivered high‑quality, well‑tested
+                microservices. His ownership and calm under pressure made him
+                the go‑to engineer for critical paths.
+              </p>
+            </div>
+
+            <div class="rec__tags">
+              <span class="skill" role="listitem">Ownership</span>
+              <span class="skill" role="listitem">Spring Boot</span>
+              <span class="skill" role="listitem">Kafka</span>
+            </div>
+          </article>
+
+          <!-- duplicate your other cards, just add class="card rec" and the same structure -->
+        </div>
       </section>
     </main>
 
