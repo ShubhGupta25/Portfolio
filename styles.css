@@ -946,8 +946,8 @@ Recommendations — standout style
   padding: 16px 18px 0 18px;
 }
 .rec__avatar {
-  width: 46% !important;
-  height: 46% !important;
+  width: 100px !important;
+  height: 100px !important;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.16);
   object-fit: cover;
