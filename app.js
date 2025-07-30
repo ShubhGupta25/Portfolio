@@ -320,7 +320,7 @@ function renderProjects() {
       ),
       h(
         "div",
-        { class: "carousel", "data-mode": "continuous", "data-speed": "0.40" },
+        { class: "carousel", "data-mode": "continuous", "data-speed": "0.70" },
         [
           h("div", {
             class: "carousel-track",
@@ -513,7 +513,7 @@ function renderCertificates() {
       h("div", { class: "section-divider", "aria-hidden": "true" }),
       h(
         "div",
-        { class: "carousel", "data-mode": "continuous", "data-speed": "0.40" },
+        { class: "carousel", "data-mode": "continuous", "data-speed": "0.45" },
         [
           h(
             "div",
@@ -575,7 +575,7 @@ function renderRecommendations() {
       h("div", { class: "section-divider", "aria-hidden": "true" }),
       h(
         "div",
-        { class: "carousel", "data-mode": "continuous", "data-speed": "0.40" },
+        { class: "carousel", "data-mode": "continuous", "data-speed": "0.35" },
         [
           h(
             "div",
