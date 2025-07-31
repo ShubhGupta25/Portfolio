@@ -489,7 +489,7 @@ section {
   overflow: hidden;
   background: var(--card-glass);
   border: 1px solid rgba(0, 201, 255, 0.12);
-  max-height: 420px;
+  height: 420px;
   max-width: 360px;
   flex-direction: column;
   box-shadow: var(--card-shadow);
@@ -525,7 +525,16 @@ section {
   flex-direction: column;
   gap: 10px;
   overflow: auto;
+  max-height: 300px;
 }
+
+#projects-section .card-content {
+  max-height: 200px;
+}
+#certificates .card-content {
+  max-height: 200px;
+}
+
 .card-content::-webkit-scrollbar {
   width: 0;
   height: 0;
