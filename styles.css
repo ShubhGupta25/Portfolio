@@ -296,6 +296,7 @@ section {
   cursor: default;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
 }
 .skill:hover {
   background: var(--gradient);
@@ -505,6 +506,7 @@ section {
 /* Card image */
 .card img {
   width: 100%;
+  max-height: 45%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
@@ -525,14 +527,15 @@ section {
   flex-direction: column;
   gap: 10px;
   overflow: auto;
-  max-height: 280px;
+  height: 265px;
+}
+
+#certificates .card-content {
+  max-height: 215px;
 }
 
 #projects-section .card-content {
-  max-height: 200px;
-}
-#certificates .card-content {
-  max-height: 200px;
+  max-height: 225px;
 }
 
 .card-content::-webkit-scrollbar {
