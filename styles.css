@@ -43,20 +43,20 @@ section {
 
 /* ================== VARIABLES ================== */
 :root {
-  --accent1: #00c9ff;
-  --accent2: #ff00cc;
+  --accent1: #74c4da;
+  --accent2: #f4d6ee;
   --gradient: linear-gradient(90deg, var(--accent2), var(--accent1));
-  --card-bg: #181824;
-  --card-glass: rgba(24, 24, 36, 0.6);
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  --ring: 0 0 0 2px rgba(0, 201, 255, 0.35);
+  --card-bg: #1c1824;
+  --card-glass: rgba(24, 33, 36, 0.6);
+  --card-shadow: 0 8px 32px rgba(240, 227, 165, 0.264);
+  --ring: 0 0 0 2px rgba(255, 111, 0, 0.275);
   --container: 1200px;
   --wide: 1500px;
-  --rec-c1: #ff7a18; /* orange */
-  --rec-c2: #ff00cc; /* pink */
-  --rec-c3: #00c9ff; /* blue */
-  --rec-glow: 0 0 40px rgba(255, 0, 204, 0.18),
-    0 10px 30px rgba(0, 201, 255, 0.12);
+  --rec-c1: #f4914b; /* orange */
+  --rec-c2: #d096c5; /* pink */
+  --rec-c3: #7ac1d4; /* blue */
+  --rec-glow: 0 0 40px rgba(0, 255, 170, 0.27),
+    0 10px 30px rgba(0, 200, 255, 0.314);
 }
 
 /* ================== HEADER ================== */
@@ -113,6 +113,10 @@ section {
   max-width: var(--container);
   margin: 0 auto;
 }
+section:nth-child(even) {
+    background: #181818;
+}
+
 .section-title {
   font-size: 1.8rem;
   font-weight: 900;
@@ -195,7 +199,7 @@ section {
   display: inline-block;
   padding: 14px 32px;
   background: var(--gradient);
-  color: #fff;
+  color: #000000;
   font-weight: 800;
   border-radius: 999px;
   text-decoration: none;
@@ -288,9 +292,9 @@ section {
   font-size: clamp(0.78rem, 1.6vw, 0.98rem);
   letter-spacing: 0.3px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 85, 0, 0.6);
+  border: 1px solid rgba(252, 158, 255, 0.6);
   border-radius: 999px;
-  color: #e9eef2;
+  color: #fbffed;
   box-shadow: 0 0 10px rgba(255, 0, 204, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
   cursor: default;
@@ -302,6 +306,7 @@ section {
   background: var(--gradient);
   box-shadow: 0 0 18px rgba(0, 201, 255, 0.35);
   transform: translateY(-2px) scale(1.05);
+  color: black
 }
 @media (max-width: 680px) {
   .skills-list {
@@ -449,7 +454,7 @@ section {
   border-radius: 999px;
   font-weight: 900;
   letter-spacing: 0.6px;
-  color: #fff;
+  color: black;
   background: var(--gradient);
   box-shadow: 0 0 14px rgba(255, 0, 204, 0.35);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
@@ -461,20 +466,21 @@ section {
 }
 
 /* ================== PROJECTS & EXPERIENCE ================== */
-#projects-section,
+/* #projects-section,
 #portfolio {
   max-width: var(--wide);
-  width: min(96vw, var(--wide));
-}
+  width: min(vw, var(--wide));
+} */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
   margin-top: 28px;
+  width: 100%;
 }
 @media (max-width: 1024px) {
   .portfolio-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 @media (max-width: 640px) {
@@ -971,7 +977,7 @@ footer {
     ),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.1));
   /* inset to sink edges */
-  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
 }
 .carousel::before,
 .carousel::after {

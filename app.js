@@ -16,19 +16,17 @@ const DEFAULT_SITE_DATA = {
     { href: "#portfolio", label: "Experience" },
     { href: "#projects-section", label: "Projects" },
     { href: "#skills", label: "Skills" },
-    { href: "#education", label: "Education" },
     { href: "#achievements", label: "Achievements" },
-    { href: "#certificates", label: "Certificates" },
-    { href: "#recommendations", label: "Recommendations" },
+    // { href: "#certificates", label: "Certificates" },
     { href: "#contact", label: "Contact" },
   ],
   hero: {
     phrases: [
-      "Hi, I'm Shubh Gupta",
-      "Java & Spring Boot Developer",
-      "I build scalable event‑driven microservices",
-      "Kafka • Spring WebFlux • AWS • DDD",
-      "Thanks for visiting my portfolio",
+"Hi, I'm Shubh Gupta",
+"Software Engineer • Backend & Distributed Systems",
+"I build scalable microservices and real-time systems",
+"Java 17 • Spring Boot • Kafka • AWS • WebFlux",
+"Let’s build something impactful together",
     ],
     socials: [
       {
@@ -50,64 +48,97 @@ const DEFAULT_SITE_DATA = {
   },
   about: {
     avatar: "https://avatars.githubusercontent.com/u/86280855?v=4",
-    text: `Java developer with 2 years of experience in event-driven
-microservices and legacy modernization using Java and Spring Boot.
-Strong in collaboration, optimization, and adapting to new tech.
+    text: `I am a Software Engineer specializing in building scalable microservices, event-driven architectures, and high-performance backend systems using Java 17, Spring Boot, Kafka, and AWS. At Infosys, working for American Express, I design mission-critical systems that support global financial operations at massive scale.
+    <br /><br />
+    If you're building high-impact products or working on problems that require strong backend engineering and architectural thinking, let’s connect and explore how we can build something exceptional together.
 <br /><br />
 <b>Location:</b> Bengaluru, Karnataka<br />
 <b>Email:</b> shubhgupta036@gmail.com<br />
 <b>Phone:</b> +91 9752897467`,
   },
   experience: [
-    {
-      logo: "https://cdn.simpleicons.org/infosys/0a74ff",
-      role: "Specialist Programmer, Infosys",
-      desc: `<b>02/2024 – Present | Bangalore, Karnataka</b><br />
-Engineer III (Contractor) at American Express.<br />
-• Migrated legacy mainframe systems to Java microservices using Spring Boot.<br />
-• Built a configurable, global codebase supporting multiple markets.<br />
-• Developed a rule engine with ANTLR for dynamic business logic.<br />
-• Implemented Kafka-based batch and real-time pipeline for data delivery.<br />
-• Automated binary data transformation for seamless integration.<br />
-• Configured a variety of products for different markets.<br />
-<i>Tech: DDD, Event-driven Architecture, Reactive Programming, TDD, BDD</i>`,
-    },
-    {
-      logo: "https://cdn.simpleicons.org/cognizant/00c7fd",
-      role: "Programmer Analyst, Cognizant",
-      desc: `<b>01/2023 – 01/2024 | Chennai, Tamil Nadu</b><br />
-Internship & Full-Time (offer delayed due to restructuring).<br />
-• Built RESTful APIs using Spring Boot with AWS Lambda and API Gateway.<br />
-• Contributed to POCs using AWS services like S3, DynamoDB, and CloudWatch.`,
-    },
+ {
+  logo: "https://cdn.simpleicons.org/infosys/0a74ff",
+  role: "Specialist Programmer, Infosys",
+  desc: `<b>02/2024 – Present | Bangalore, Karnataka</b><br />
+Working as an Engineer III (Contractor) at American Express.<br /><br />
+
+• Migrated legacy mainframe workflows to modern <b>Java 17 microservices</b>, improving maintainability and deployment speed.<br />
+• Built a configurable global codebase to unify product logic across multiple markets.<br />
+• Developed a <b>rule engine using ANTLR</b> to enable dynamic business logic without code changes.<br />
+• Designed <b>Kafka-based real-time and batch pipelines</b> for seamless downstream integrations.<br />
+• Automated <b>binary–JSON transformations</b> for high-speed and reliable data delivery.<br />
+• Implemented cloud-ready, event-driven backend components using <b>DDD, EDA, WebFlux, TDD, and BDD</b>.<br />
+• Delivered <b>mission-critical, high-reliability financial systems</b> used globally.<br /><br />
+
+<i>Tech: Java 17, Spring Boot, Kafka, ANTLR, WebFlux, DDD, Event-Driven Architecture, TDD, BDD, AWS</i>`
+}
+,
+//     {
+//       logo: "https://cdn.simpleicons.org/cognizant/00c7fd",
+//       role: "Programmer Analyst, Cognizant",
+//       desc: `<b>01/2023 – 01/2024 | Chennai, Tamil Nadu</b><br />
+// Internship & Full-Time (offer delayed due to restructuring).<br />
+// • Built RESTful APIs using Spring Boot with AWS Lambda and API Gateway.<br />
+// • Contributed to POCs using AWS services like S3, DynamoDB, and CloudWatch.`,
+//     },
   ],
-  skills: [
-    "Java SE",
-    "Spring Boot",
-    "Spring WebFlux",
-    "REST & GraphQL APIs",
-    "Microservices",
-    "C++",
-    "TypeScript",
-    "SQL",
-    "Cassandra",
-    "MySQL",
-    "MongoDB",
-    "PostgreSQL",
-    "Kafka",
-    "AWS",
-    "Jenkins",
-    "GitHub Actions",
-    "Docker",
-    "Kubernetes",
-    "OOP",
-    "TDD/BDD",
-    "JUnit",
-    "Cucumber",
-    "Problem Solving",
-  ],
+skills: [
+  // Core Backend
+  "Java 17",
+  "Spring Boot",
+  "Microservices Architecture",
+  "Spring WebFlux",
+  "REST APIs",
+  "GraphQL APIs",
+
+  // Distributed & Event-Driven
+  "Apache Kafka",
+  "Event-Driven Architecture",
+  "Distributed Systems",
+  "System Design",
+
+  // Databases
+  "PostgreSQL",
+  "MongoDB",
+  "Cassandra",
+  "MySQL",
+  "SQL",
+
+  // Cloud & DevOps
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "Jenkins",
+  "GitHub Actions",
+  "NGINX",
+  "CI/CD Pipelines",
+
+  // Programming Paradigms
+  "OOP",
+  "TDD",
+  "BDD",
+
+  // Testing
+  "JUnit",
+  "Cucumber",
+
+  // Frontend / Full Stack
+  "TypeScript",
+  "React.js",
+  "JavaScript",
+
+  // Tools & Monitoring
+  "Git",
+  "ELK Stack (Elastic Stack)",
+  "Grafana",
+
+  // CS Fundamentals
+  "Data Structures & Algorithms",
+  "Problem Solving",
+],
   achievements: [
-    "Secured 2nd place in the Infosys Hackathon by developing a talent acquisition solution.",
+    "CodeKaze — Coding Ninjas : Top 1% — Rank 266 out of 39,000+ participants (Nov 2021)",
     "Achieved a LeetCode rating of 1872 and earned the Knight Badge (top 5% of all users).",
   ],
   education: {
@@ -383,32 +414,6 @@ function renderAchievements() {
   );
 }
 
-function renderEducation() {
-  return h(
-    "section",
-    { class: "sec", id: "education", "aria-labelledby": "edu-title" },
-    [
-      h("a", { id: "edu", class: "anch", "aria-hidden": "true" }),
-      h("h3", { class: "section-title", id: "edu-title" }, "Education"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h("div", { class: "about", style: "align-items: flex-start" }, [
-        h("img", {
-          class: "logo",
-          src: siteData.education.logo,
-          alt: "LNCT logo",
-        }),
-        h("div", { class: "about-card" }, [
-          h("b", {}, siteData.education.headline),
-          "<br />",
-          siteData.education.details,
-          "<br />",
-          h("span", {}, siteData.education.meta),
-        ]),
-      ]),
-    ]
-  );
-}
-
 function renderContact() {
   return h(
     "section",
@@ -546,67 +551,6 @@ function renderCertificates() {
   );
 }
 
-function renderRecommendations() {
-  const cards = siteData.recommendations.map((r) =>
-    h("article", { class: "card rec", role: "listitem" }, [
-      h("div", { class: "rec__head" }, [
-        h("img", { class: "rec__avatar", src: r.avatar, alt: r.name }),
-        h("div", { class: "rec__meta" }, [
-          h("strong", {}, r.name),
-          h("span", { class: "muted" }, r.title),
-        ]),
-      ]),
-      h("div", { class: "rec__body" }, [
-        h("span", { class: "rec__quote-mark", "aria-hidden": "true" }, "“"),
-        h("p", { class: "rec__text" }, r.text),
-      ]),
-      h(
-        "div",
-        { class: "rec__tags" },
-        r.tags.map((t) => h("span", { class: "skill", role: "listitem" }, t))
-      ),
-    ])
-  );
-  return h(
-    "section",
-    { class: "sec", id: "recommendations", "aria-labelledby": "recs-title" },
-    [
-      h("h3", { class: "section-title", id: "recs-title" }, "Recommendations"),
-      h("div", { class: "section-divider", "aria-hidden": "true" }),
-      h(
-        "div",
-        { class: "carousel", "data-mode": "continuous", "data-speed": "0.35" },
-        [
-          h(
-            "div",
-            { class: "carousel-track", id: "recs-track", role: "list" },
-            cards
-          ),
-          h(
-            "button",
-            {
-              class: "carousel-btn prev",
-              "aria-label": "Previous",
-              title: "Previous (pauses on hover)",
-            },
-            "‹"
-          ),
-          h(
-            "button",
-            {
-              class: "carousel-btn next",
-              "aria-label": "Next",
-              title: "Next (pauses on hover)",
-            },
-            "›"
-          ),
-          h("div", { class: "carousel-dots", id: "recs-dots" }),
-          h("div", { class: "carousel-status", "aria-live": "polite" }),
-        ]
-      ),
-    ]
-  );
-}
 
 function renderFooter() {
   return h(
@@ -623,10 +567,9 @@ function renderMain() {
     renderExperience(), // Experience
     renderProjects(), // Projects
     renderSkills(), // Skills
-    renderEducation(), // Education
     renderAchievements(), // Achievements
-    renderCertificates(), // Certificates
-    renderRecommendations(), // Recommendations
+    //Rendering certificates section is currently disabled
+    // renderCertificates(), // Certificates
     renderContact(),
   ]);
 }
