@@ -1068,9 +1068,9 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   transform: scaleX(-1);
 }
 .carousel-track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: min(90%, 360px);
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
   gap: 20px;
   overflow-x: auto;
   padding: 8px 2px;
@@ -1100,8 +1100,24 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
 }
 @media (min-width: 980px) {
   .carousel-track {
-    grid-auto-columns: minmax(360px, 1fr);
+    /* allow cards to expand on wide screens */
+    align-items: stretch;
   }
+  .carousel-track > .card {
+    min-width: 360px;
+    flex: 0 0 360px;
+  }
+}
+.carousel-track > .card { 
+  display: inline-block; /* fallback to avoid vertical stacking */
+  vertical-align: top;
+  flex: 0 0 min(90%, 360px);
+  width: min(90%, 360px);
+}
+
+/* Safety: if flex isn't honored for any reason, force horizontal flow */
+.carousel-track {
+  white-space: nowrap;
 }
 .carousel .card {
   scroll-snap-align: start;
@@ -1248,4 +1264,46 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
 }
 .desc-toggle[aria-expanded="true"] .less-label {
   display: inline;
+}
+
+/* DEBUG HELPERS: force horizontal layout and make bounds visible
+   Temporary — remove once we confirm the layout. */
+.carousel-track.debug-force {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+.carousel-track.debug-force > * {
+  display: inline-flex !important;
+  vertical-align: top !important;
+  flex: 0 0 auto !important;
+}
+.carousel-track.debug-force,
+.carousel-track.debug-force > * {
+  outline: 2px dashed rgba(255, 80, 80, 0.12) !important;
+}
+
+/* Permanent override for project/carousel tracks to prevent vertical stacking
+   Some environments may override generic selectors; target IDs with !important
+   to guarantee horizontal flow. */
+#projects-track,
+#certs-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 20px !important;
+  align-items: flex-start !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+#projects-track > .card,
+#certs-track > .card {
+  display: inline-flex !important;
+  vertical-align: top !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
 }

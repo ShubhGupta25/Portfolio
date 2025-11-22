@@ -787,6 +787,7 @@ function renderMain() {
     if (window.initCarousels) window.initCarousels();
     setTimeout(window.initCarousels, 300);
     setTimeout(window.initCarousels, 1200);
+    // Debug helper removed — layout enforced via CSS overrides in styles.css
   } catch (err) {
     console.error(err);
     status.innerHTML = `
@@ -917,7 +918,8 @@ window.initCarousels = function () {
     function ensureOverflow() {
       try {
         const maxLoops = 6; // be generous but bounded
-        const base = Array.from(track.children).slice(0); // snapshot current set to clone from
+        // use the original items snapshot to avoid cloning already-cloned nodes
+        const base = Array.from(items).slice(0);
         let loops = 0;
         // If no items, nothing to do
         if (!base.length) return;
@@ -940,7 +942,9 @@ window.initCarousels = function () {
     let items = Array.from(track.children);
 
     // For continuous mode, duplicate children for seamless loop
+    // Capture the original items and base scroll width so wrapping uses the original block
     if (mode === "continuous" && items.length) {
+      const baseScrollWidth = track.scrollWidth || items.reduce((s, n) => s + (n.getBoundingClientRect().width || 0), 0);
       const clone = items.map((n) => n.cloneNode(true));
       clone.forEach((n) => track.appendChild(n));
       // Ensure we have enough width to scroll
@@ -1039,7 +1043,8 @@ window.initCarousels = function () {
     // Continuous animation
     function loop() {
       if (paused || reduceMotion || mode !== "continuous") return;
-      const max = track.scrollWidth / 2; // base wrap; we duplicated at least once and possibly more
+      // wrap using the original base width if available to avoid mis-calculated wrap
+      const max = (typeof baseScrollWidth !== 'undefined' && baseScrollWidth > 0) ? baseScrollWidth : track.scrollWidth / 2;
       let nextLeft = track.scrollLeft + speed;
       if (nextLeft >= max) nextLeft -= max; // wrap seamlessly
       track.scrollLeft = nextLeft;

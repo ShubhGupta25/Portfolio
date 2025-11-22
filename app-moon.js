@@ -39,7 +39,9 @@
       x: Math.random() * W,
       y: Math.random() * H,
       brightness: Math.random() * 0.8 + 0.2,
-      size: Math.random() * 1.5
+      size: Math.random() * 1.5,
+      blinkPhase: Math.random() * Math.PI * 2,
+      blinkSpeed: 0.002 + Math.random() * 0.003
     });
   }
   
@@ -242,10 +244,14 @@
       console.log('Moon loop started, canvas dims:', canvas.width, 'x', canvas.height, 'logical:', W, 'x', H);
     }
 
-    // Draw stars with varying sizes
+    // Draw stars with blinking animation
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
-      ctx.fillStyle = `rgba(255, 255, 255, ${s.brightness})`;
+      // Update blink phase and compute brightness modulation
+      s.blinkPhase += s.blinkSpeed;
+      const blinkMod = (Math.sin(s.blinkPhase) + 1) * 0.5; // 0..1 sine wave
+      const modulatedBrightness = s.brightness * (0.2 + blinkMod * 0.8); // fade between 20% and 100%
+      ctx.fillStyle = `rgba(255, 255, 255, ${modulatedBrightness})`;
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.size * 0.5, 0, Math.PI * 2);
       ctx.fill();
