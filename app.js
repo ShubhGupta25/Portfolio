@@ -905,6 +905,7 @@ window.initCarousels = function () {
 
   function setupCarousel(root) {
     if (root.dataset.inited === "1") return;
+    // Cache DOM queries at function start
     const track = root.querySelector(".carousel-track");
     const prev = root.querySelector(".carousel-btn.prev");
     const next = root.querySelector(".carousel-btn.next");
@@ -924,10 +925,13 @@ window.initCarousels = function () {
         // If no items, nothing to do
         if (!base.length) return;
         // Keep cloning until scrollable width exceeds container sufficiently
+        // Cache clientWidth and scrollWidth to avoid repeated layout queries
+        const trackClientWidth = track.clientWidth;
+        const baseCardWidth = base[0].getBoundingClientRect().width || 300;
         while (
           track.scrollWidth <=
-            track.clientWidth +
-              (base[0].getBoundingClientRect().width || 300) &&
+            trackClientWidth +
+              baseCardWidth &&
           loops < maxLoops
         ) {
           base.forEach((n) => track.appendChild(n.cloneNode(true)));
@@ -977,6 +981,8 @@ window.initCarousels = function () {
     }
     let rafId = null;
     let paused = false;
+    // Cache card width for jump calculations (updated once at init)
+    let cachedCardWidth = items.length > 0 ? items[0].getBoundingClientRect().width + 20 : 300;
 
     function toIndex(i) {
       if (mode === "continuous") return; // ignore in continuous
@@ -992,10 +998,8 @@ window.initCarousels = function () {
     // Buttons jump by one card width (works for both modes)
     function jump(dir) {
       if (mode === "continuous") {
-        const card = items[0];
-        const step = card ? card.getBoundingClientRect().width + 20 : 300;
         track.scrollTo({
-          left: track.scrollLeft + dir * step,
+          left: track.scrollLeft + dir * cachedCardWidth,
           behavior: "smooth",
         });
       } else {

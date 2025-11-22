@@ -602,9 +602,7 @@ footer {
   background: linear-gradient(
     120deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 35%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.08) 65%,
+    rgba(255, 255, 255, 0.1) 50%,
     transparent 100%
   );
   transform: translateX(-40%);
@@ -849,17 +847,7 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   height: auto;
   min-height: 290px;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  background: radial-gradient(
-      120% 120% at -10% -10%,
-      rgba(255, 122, 24, 0.06),
-      transparent 60%
-    ),
-    radial-gradient(
-      120% 100% at 110% 110%,
-      rgba(0, 201, 255, 0.05),
-      transparent 60%
-    ),
-    rgba(24, 24, 36, 0.72);
+  background: rgba(24, 24, 36, 0.72);
   backdrop-filter: blur(6px);
   box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
   overflow: clip;
@@ -1032,17 +1020,7 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   padding: 8px 0;
   overflow: hidden;
   isolation: isolate;
-  background: radial-gradient(
-      120% 140% at -10% -20%,
-      rgba(255, 0, 204, 0.04),
-      transparent 60%
-    ),
-    radial-gradient(
-      120% 120% at 110% 120%,
-      rgba(0, 201, 255, 0.04),
-      transparent 60%
-    ),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.1));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.1));
   /* inset to sink edges */
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
 }

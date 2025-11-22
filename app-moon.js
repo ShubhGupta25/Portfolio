@@ -45,9 +45,9 @@
     });
   }
   
-  // Shooting stars
+  // Shooting stars (reduced from 3 to 2)
   const shootingStars = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     shootingStars.push({
       x: Math.random() * W,
       y: Math.random() * H * 0.5,
@@ -237,10 +237,21 @@
     ctx.restore();
   }
 
-  // main loop
+  // main loop with visibility check
   let last = performance.now();
   let frameCount = 0;
+  let lastViz = 'visible';
+  document.addEventListener('visibilitychange', () => {
+    lastViz = document.visibilityState;
+  });
+  
   function loop(now){
+    // Skip rendering if document is not visible (tab inactive)
+    if (lastViz === 'hidden') {
+      requestAnimationFrame(loop);
+      return;
+    }
+    
     frameCount++;
     const dt = now - last; last = now;
     // clear with subtle night tint (keep darker near edges)
@@ -253,9 +264,13 @@
       console.log('Moon loop started, canvas dims:', canvas.width, 'x', canvas.height, 'logical:', W, 'x', H);
     }
 
-    // Draw stars with blinking animation
+    // Draw stars with blinking animation (skip heavily off-screen stars for perf)
+    const starRadius = 2;
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
+      // Quick bounds check - skip stars far off-screen
+      if (s.x < -starRadius || s.x > W + starRadius || s.y < -starRadius || s.y > H + starRadius) continue;
+      
       // Update blink phase and compute brightness modulation
       s.blinkPhase += s.blinkSpeed;
       const blinkMod = (Math.sin(s.blinkPhase) + 1) * 0.5; // 0..1 sine wave
@@ -327,8 +342,12 @@
       if (c.x > W + 220) c.x = -220 - Math.random()*200;
     }
 
-    // draw darker overlay to simulate clouds blocking rays: draw clouds as dark shapes on top
-    for (let i=clouds.length-1;i>=0;i--){ drawCloud(clouds[i], now); }
+    // draw darker overlay to simulate clouds blocking rays: draw clouds as dark shapes on top (skip heavily off-screen)
+    for (let i=clouds.length-1;i>=0;i--){
+      const c = clouds[i];
+      if (c.x < -350 || c.x > W + 350) continue; // skip if far off-screen
+      drawCloud(c, now);
+    }
 
     requestAnimationFrame(loop);
   }
