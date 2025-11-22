@@ -28,27 +28,33 @@
     console.error('Could not get canvas 2d context');
     throw new Error('Could not get canvas 2d context');
   }
-  
-  // Draw test color immediately to verify canvas is working
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.fillStyle = '#0066ff';  // bright blue - unmissable
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '24px Arial';
-  ctx.fillText('CANVAS WORKING - MOON SHOULD APPEAR HERE', 50, 50);
-  console.log('Test canvas render complete');
 
   let DPR = Math.max(1, window.devicePixelRatio || 1);
   let W = window.innerWidth, H = window.innerHeight;
   
-  // Generate stars for background
+  // Generate stars for background (increased count)
   const stars = [];
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 300; i++) {
     stars.push({
       x: Math.random() * W,
       y: Math.random() * H,
-      brightness: Math.random() * 0.7 + 0.3
+      brightness: Math.random() * 0.8 + 0.2,
+      size: Math.random() * 1.5
+    });
+  }
+  
+  // Shooting stars
+  const shootingStars = [];
+  for (let i = 0; i < 3; i++) {
+    shootingStars.push({
+      x: Math.random() * W,
+      y: Math.random() * H * 0.5,
+      vx: 2 + Math.random() * 3,
+      vy: 0.5 + Math.random() * 1.5,
+      brightness: 0.8,
+      trail: 40,
+      active: true,
+      spawnTime: Math.random() * 10000
     });
   }
   
@@ -119,7 +125,7 @@
         y: Math.random()*H*0.9,
         sx: 60 + Math.random()*220 + z*40,
         sy: 24 + Math.random()*80 + z*12,
-        speed: 6 + Math.random()*20 + z*8,
+        speed: 1.5 + Math.random()*3 + z*0.8,
         alpha: 0.22 + z*0.12 + Math.random()*0.12,
         z: z,
         phase: Math.random()*Math.PI*2
@@ -127,7 +133,26 @@
     }
   }
 
-  // Rays config
+  // Ambient glow blobs scattered across the viewport to make glow even
+  const AMBIENT_COUNT = 10;
+  const ambientBlobs = [];
+  for (let i = 0; i < AMBIENT_COUNT; i++) {
+    const sizeFactor = 0.25 + Math.random() * 0.7; // relative to max dimension
+    ambientBlobs.push({
+      rx: Math.random(), // relative x (0..1)
+      ry: Math.random() * 0.95, // relative y
+      sizeFactor: sizeFactor,
+      offsetAmpFactor: 0.02 + Math.random() * 0.06, // fraction of screen for subtle motion
+      intensity: 0.015 + Math.random() * 0.06,
+      speed: 0.00015 + Math.random() * 0.0006,
+      phase: Math.random() * Math.PI * 2,
+      x: 0,
+      y: 0,
+      r: 0
+    });
+  }
+
+  // Rays config (kept but will not be used for bright radial rays)
   const RAY_COUNT = 36;
   const rays = new Array(RAY_COUNT).fill(0).map((_,i)=>({
     angle: (i/RAY_COUNT) * Math.PI*2,
@@ -138,11 +163,12 @@
   }));
 
   function drawMoonGlow(){
-    // large soft radial for overall moon light
-    const g = ctx.createRadialGradient(moon.x, moon.y, 0, moon.x, moon.y, moon.r*6);
-    g.addColorStop(0, 'rgba(255,255,245,0.95)');
-    g.addColorStop(0.12, 'rgba(255,250,220,0.55)');
-    g.addColorStop(0.28, 'rgba(255,240,200,0.12)');
+    // More natural moon glow - softer and more gradual
+    const g = ctx.createRadialGradient(moon.x, moon.y, 0, moon.x, moon.y, moon.r*8);
+    g.addColorStop(0, 'rgba(255,255,245,0.65)');
+    g.addColorStop(0.08, 'rgba(255,250,220,0.35)');
+    g.addColorStop(0.18, 'rgba(255,240,180,0.08)');
+    g.addColorStop(0.35, 'rgba(200,200,180,0.02)');
     g.addColorStop(1, 'rgba(8,10,14,0)');
     ctx.fillStyle = g;
     ctx.fillRect(0,0,W,H);
@@ -216,11 +242,55 @@
       console.log('Moon loop started, canvas dims:', canvas.width, 'x', canvas.height, 'logical:', W, 'x', H);
     }
 
-    // Draw stars
+    // Draw stars with varying sizes
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
       ctx.fillStyle = `rgba(255, 255, 255, ${s.brightness})`;
-      ctx.fillRect(s.x, s.y, 1, 1);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Update and draw shooting stars
+    for (let i = 0; i < shootingStars.length; i++) {
+      const ss = shootingStars[i];
+      if (now - ss.spawnTime > 5000) {
+        ss.spawnTime = now + 8000 + Math.random() * 6000;
+        ss.x = Math.random() * W;
+        ss.y = Math.random() * H * 0.5;
+        ss.active = true;
+      }
+      
+      if (ss.active) {
+        ss.x += ss.vx;
+        ss.y += ss.vy;
+        
+        if (ss.x > W + 100 || ss.y > H) {
+          ss.active = false;
+        } else {
+          // Draw shooting star trail
+          ctx.save();
+          ctx.globalAlpha = ss.brightness * 0.6;
+          const trailGrad = ctx.createLinearGradient(ss.x - ss.vx * ss.trail, ss.y - ss.vy * ss.trail, ss.x, ss.y);
+          trailGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+          trailGrad.addColorStop(0.5, 'rgba(200, 220, 255, 0.3)');
+          trailGrad.addColorStop(1, 'rgba(255, 255, 255, 0.8)');
+          ctx.strokeStyle = trailGrad;
+          ctx.lineWidth = 2;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(ss.x - ss.vx * ss.trail, ss.y - ss.vy * ss.trail);
+          ctx.lineTo(ss.x, ss.y);
+          ctx.stroke();
+          
+          // Draw bright core
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.beginPath();
+          ctx.arc(ss.x, ss.y, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
     }
 
     // compute moon pos with pointer parallax
