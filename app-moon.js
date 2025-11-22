@@ -29,12 +29,12 @@
     throw new Error('Could not get canvas 2d context');
   }
 
-  let DPR = Math.max(1, window.devicePixelRatio || 1);
+  let DPR = Math.min(2, Math.max(1, window.devicePixelRatio || 1)); // cap at 2x for performance
   let W = window.innerWidth, H = window.innerHeight;
   
-  // Generate stars for background (increased count)
+  // Generate stars for background (reduced from 300 to 150 for performance)
   const stars = [];
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < 150; i++) {
     stars.push({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -112,15 +112,23 @@
     }
   }).catch(() => {});
 
-  // pointer to create subtle parallax of moon and rays
+  // pointer to create subtle parallax of moon and rays (throttle to every 2-3 frames)
   let pX = 0.5, pY = 0.5; // normalized 0..1
-  window.addEventListener('pointermove', (e) => { pX = e.clientX / W; pY = e.clientY / H; }, { passive: true });
+  let lastPointerUpdate = 0;
+  window.addEventListener('pointermove', (e) => {
+    const now = performance.now();
+    if (now - lastPointerUpdate > 50) { // throttle: update every 50ms
+      pX = e.clientX / W;
+      pY = e.clientY / H;
+      lastPointerUpdate = now;
+    }
+  }, { passive: true });
 
-  // Clouds layer
-  const CLOUD_LAYERS = 4;
+  // Clouds layer (reduced from 4 to 2 layers for performance)
+  const CLOUD_LAYERS = 2;
   const clouds = [];
   for (let z=0; z<CLOUD_LAYERS; z++){
-    const count = 4 + z*2;
+    const count = 3 + z*1; // reduced count
     for (let i=0;i<count;i++){
       clouds.push({
         x: Math.random()*W,
@@ -211,17 +219,18 @@
   }
 
   function drawCloud(c, t){
-    // cloud as multiple overlapping ellipses for soft look
+    // cloud as multiple overlapping ellipses for soft look (reduced complexity)
     ctx.save();
     ctx.translate(c.x, c.y + Math.sin(t*0.001 + c.phase)*8);
     ctx.globalAlpha = c.alpha;
     ctx.fillStyle = 'rgba(6,8,12,0.96)';
-    ctx.filter = 'blur(18px)';
-    const parts = Math.max(3, Math.round(c.sx/40));
+    // Use smaller blur for performance
+    ctx.filter = 'blur(10px)';
+    const parts = 2 + Math.floor(c.sx / 80); // reduced from original calculation
     for (let i=0;i<parts;i++){
-      const rx = (i - parts/2) * (c.sx/parts*0.6) + Math.sin(t*0.0007 + i) * 8;
+      const rx = (i - parts/2) * (c.sx/parts*0.6);
       const ry = (Math.cos(i) * c.sy*0.2);
-      ctx.beginPath(); ctx.ellipse(rx, ry, c.sx*0.6, c.sy*0.6, Math.PI*0.12 * i, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(rx, ry, c.sx*0.5, c.sy*0.5, Math.PI*0.08 * i, 0, Math.PI*2); ctx.fill();
     }
     ctx.filter = 'none';
     ctx.globalAlpha = 1;

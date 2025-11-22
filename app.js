@@ -1040,9 +1040,16 @@ window.initCarousels = function () {
       { passive: true }
     );
 
-    // Continuous animation
-    function loop() {
+    // Continuous animation (throttled to reduce frame rate for performance)
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 24; // target ~42fps instead of 60fps
+    function loop(now) {
       if (paused || reduceMotion || mode !== "continuous") return;
+      if (now - lastFrameTime < FRAME_INTERVAL) {
+        rafId = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrameTime = now;
       // wrap using the original base width if available to avoid mis-calculated wrap
       const max = (typeof baseScrollWidth !== 'undefined' && baseScrollWidth > 0) ? baseScrollWidth : track.scrollWidth / 2;
       let nextLeft = track.scrollLeft + speed;
