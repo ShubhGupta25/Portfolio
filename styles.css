@@ -1012,192 +1012,6 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   }
 }
 
-/* ================== CAROUSEL (consolidated) ================== */
-.carousel {
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 18px;
-  padding: 8px 0;
-  overflow: hidden;
-  isolation: isolate;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.1));
-  /* inset to sink edges */
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
-}
-.carousel::before,
-.carousel::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 64px;
-  pointer-events: none;
-  z-index: 2;
-  background: linear-gradient(
-    to right,
-    rgba(10, 10, 16, 0.95),
-    rgba(10, 10, 16, 0)
-  );
-}
-.carousel::before {
-  left: 0;
-}
-.carousel::after {
-  right: 0;
-  transform: scaleX(-1);
-}
-.carousel-track {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 8px 2px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 40px,
-    #000 calc(100% - 40px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 40px,
-    #000 calc(100% - 40px),
-    transparent 100%
-  );
-}
-.carousel-track::-webkit-scrollbar {
-  display: none;
-}
-.carousel-track.no-snap {
-  scroll-snap-type: none;
-}
-@media (min-width: 980px) {
-  .carousel-track {
-    /* allow cards to expand on wide screens */
-    align-items: stretch;
-  }
-  .carousel-track > .card {
-    min-width: 360px;
-    flex: 0 0 360px;
-  }
-}
-.carousel-track > .card { 
-  display: inline-block; /* fallback to avoid vertical stacking */
-  vertical-align: top;
-  flex: 0 0 min(90%, 360px);
-  width: min(90%, 360px);
-}
-
-/* Safety: if flex isn't honored for any reason, force horizontal flow */
-.carousel-track {
-  white-space: nowrap;
-}
-.carousel .card {
-  scroll-snap-align: start;
-  min-height: 290px;
-  transition: transform 0.25s, box-shadow 0.25s, opacity 0.2s;
-  opacity: 0.96;
-}
-.carousel .card.is-active {
-  transform: translateY(-3px) scale(1.01);
-  opacity: 1;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 201, 255, 0.12),
-    0 12px 36px rgba(0, 201, 255, 0.1);
-}
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 10px 12px;
-  border-radius: 999px;
-  background: rgba(17, 17, 26, 0.7);
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(6px);
-  transition: opacity 0.25s ease, transform 0.2s ease, background 0.2s ease,
-    border-color 0.2s ease;
-  z-index: 3;
-  opacity: 0;
-}
-.carousel:hover .carousel-btn,
-.carousel:focus-within .carousel-btn {
-  opacity: 1;
-}
-@media (hover: none) and (pointer: coarse) {
-  .carousel .carousel-btn {
-    opacity: 1;
-  }
-}
-.carousel-btn:hover {
-  transform: translateY(-50%) scale(1.05);
-  background: rgba(17, 17, 26, 0.9);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-.carousel-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.6);
-}
-.carousel-btn.prev {
-  left: 8px;
-}
-.carousel-btn.next {
-  right: 8px;
-}
-.carousel-dots {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-}
-.carousel-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-.carousel-dot.active {
-  background: var(--accent1);
-  box-shadow: 0 0 8px rgba(0, 201, 255, 0.6);
-  transform: scale(1.15);
-}
-.carousel-status {
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  transform: translate(-50%, 12px);
-  background: rgba(17, 17, 26, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 4;
-}
-.carousel-status.show {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-@media (prefers-reduced-motion: reduce) {
-  .carousel-btn,
-  .carousel-dot,
-  .carousel .card {
-    transition: none !important;
-  }
-}
-
 /* ================== PROJECT DESCRIPTION TOGGLE ================== */
 .card-desc {
   position: relative;
@@ -1243,27 +1057,6 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   display: inline;
 }
 
-/* DEBUG HELPERS: force horizontal layout and make bounds visible
-   Temporary — remove once we confirm the layout. */
-.carousel-track.debug-force {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: flex-start !important;
-  gap: 20px !important;
-  overflow-x: auto !important;
-  white-space: nowrap !important;
-}
-.carousel-track.debug-force > * {
-  display: inline-flex !important;
-  vertical-align: top !important;
-  flex: 0 0 auto !important;
-}
-.carousel-track.debug-force,
-.carousel-track.debug-force > * {
-  outline: 2px dashed rgba(255, 80, 80, 0.12) !important;
-}
-
 /* Permanent override for project/carousel tracks to prevent vertical stacking
    Some environments may override generic selectors; target IDs with !important
    to guarantee horizontal flow. */
@@ -1283,4 +1076,8 @@ header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter:
   vertical-align: top !important;
   flex: 0 0 auto !important;
   width: auto !important;
+}
+
+.card {
+  backdrop-filter: blur(15px) !important;
 }
