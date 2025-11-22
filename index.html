@@ -10,16 +10,28 @@
       type="image/png"
     />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./styles.css" />
     <!-- EmailJS SDK (must load before app.js) -->
     <script
       src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"
       defer
     ></script>
-    <!-- Single bundled app -->
+      <script src="./app-glow.js" defer></script>
     <script src="./app.js" defer></script>
   </head>
   <body>
+   
     <div id="app" role="document"></div>
-  </body>
-</html>
+
+    <!-- Glow background blobs (theme) -->
+    <div class="glow" id="glow" aria-hidden="true">
+      <div class="blob" id="blobA"></div>
+      <div class="blob secondary" id="blobB"></div>
+    </div>
+
+    </body>
+    </html>

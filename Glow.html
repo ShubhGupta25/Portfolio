@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Glow Effect — Demo</title>
+<style>
+  :root{
+    --bg: #0b0f17;
+    --card-bg: rgba(255,255,255,0.06);
+    --accent:  #00ffd0;   /* main glow color */
+    --accent-2: #6a00ff;  /* secondary tint */
+    --glow-size: 360px;   /* overall size of glow blob */
+    --blur-amount: 48px;
+    --pulse-duration: 3200ms;
+  }
+
+  /* page */
+  html,body{height:100%}
+  body{
+    margin:0;
+    display:grid;
+    place-items:center;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg, #05060a 0%, var(--bg) 100%);
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* container for demo */
+  .stage{
+    width:min(980px,92vw);
+    padding:48px;
+    box-sizing:border-box;
+    position:relative;
+    display:grid;
+    place-items:center;
+    gap:28px;
+  }
+
+  /* actual card */
+  .card{
+    position:relative;
+    width:min(760px,100%);
+    border-radius:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.06);
+    padding:48px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    overflow:visible;
+    z-index:2;
+  }
+
+  .card h1{
+    margin:0 0 8px 0;
+    font-weight:700;
+    font-size:32px;
+    letter-spacing:-0.02em;
+  }
+  .card p{margin:0;color:rgba(255,255,255,0.75)}
+
+  /* glow blob base - uses two overlapping blobs for depth */
+  .glow {
+    pointer-events: none;
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:var(--glow-size);
+    height:var(--glow-size);
+    transform:translate(-50%,-50%);
+    z-index:1;
+    filter: blur(var(--blur-amount));
+    mix-blend-mode: screen;
+    will-change: transform, opacity, filter;
+  }
+
+  .glow .blob{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    transition:opacity .25s linear, transform .25s linear;
+    background: radial-gradient(circle at 30% 30%,
+                rgba(0,255,208,0.95) 0%,
+                rgba(106,0,255,0.65) 40%,
+                rgba(106,0,255,0.18) 70%,
+                rgba(10,10,12,0) 100%);
+    opacity:0.95;
+    transform: translate3d(0,0,0) scale(1);
+  }
+
+  /* secondary blob for richer glow */
+  .glow .blob.secondary{
+    background: radial-gradient(circle at 70% 70%,
+                rgba(106,0,255,0.85) 0%,
+                rgba(0,255,208,0.45) 30%,
+                rgba(0,0,0,0) 70%);
+    opacity:0.9;
+    transform: translate3d(18px,-10px,0) scale(0.9);
+    mix-blend-mode: screen;
+  }
+
+  /* pulsing animation (scale + subtle translate + opacity) */
+  @keyframes pulseA {
+    0%   { transform: translate3d(0,0,0) scale(0.92); opacity:0.85; }
+    50%  { transform: translate3d(-10px,6px,0) scale(1.05); opacity:1; }
+    100% { transform: translate3d(0,0,0) scale(0.92); opacity:0.85; }
+  }
+  @keyframes pulseB {
+    0%   { transform: translate3d(18px,-10px,0) scale(0.86); opacity:0.9; }
+    50%  { transform: translate3d(30px,-6px,0) scale(1.08); opacity:1; }
+    100% { transform: translate3d(18px,-10px,0) scale(0.86); opacity:0.9; }
+  }
+
+  .glow .blob {
+    animation: pulseA var(--pulse-duration) ease-in-out infinite;
+  }
+  .glow .blob.secondary {
+    animation: pulseB calc(var(--pulse-duration) * 1.1) ease-in-out infinite;
+  }
+
+  /* hover/active interaction to intensify glow */
+  .card:hover ~ .glow,
+  .card:focus-within ~ .glow{
+    filter: blur(calc(var(--blur-amount) / 1.15));
+    transform: translateZ(0) scale(1.02);
+  }
+  .card:hover ~ .glow .blob{ opacity:1; }
+  .card:active ~ .glow .blob{ transform: scale(1.12); }
+
+  /* small helper controls */
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+    margin-top:8px;
+    z-index:3;
+  }
+  .controls button{
+    background:transparent;
+    color:#ddd;
+    border:1px solid rgba(255,255,255,0.06);
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    backdrop-filter: blur(6px);
+  }
+  .controls button:active{transform:translateY(1px)}
+  .controls small{color:#9aa3b2}
+
+  /* responsiveness */
+  @media (max-width:640px){
+    .card{padding:28px;border-radius:14px}
+    :root{--glow-size:260px; --blur-amount:36px}
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="card" tabindex="0">
+      <h1>Unicorn Glow — Demo</h1>
+      <p>Animated soft glow behind a card — tweak color, size and pulse with the controls below.</p>
+    </div>
+
+    <!-- glow element sits behind the card -->
+    <div class="glow" id="glow">
+      <div class="blob" id="blobA"></div>
+      <div class="blob secondary" id="blobB"></div>
+    </div>
+
+    <div class="controls" aria-hidden="false">
+      <button id="swap">Swap Colors</button>
+      <button id="intens">Increase Intensity</button>
+      <button id="reset">Reset</button>
+      <small>Hover the card to intensify</small>
+    </div>
+  </div>
+
+<script>
+  // Simple JS to toggle glow color presets and intensity.
+  const root = document.documentElement;
+  const blobA = document.getElementById('blobA');
+  const blobB = document.getElementById('blobB');
+
+  const presets = [
+    { a: '#00ffd0', b: '#6a00ff' }, // teal + purple
+    { a: '#ff6a88', b: '#ffb86a' }, // pink + orange
+    { a: '#6ee7b7', b: '#60a5fa' }, // mint + blue
+    { a: '#ffd166', b: '#ef476f' }  // yellow + red
+  ];
+  let idx = 0;
+  let intensity = 1;
+
+  document.getElementById('swap').addEventListener('click', () => {
+    idx = (idx + 1) % presets.length;
+    const p = presets[idx];
+    blobA.style.background = `radial-gradient(circle at 30% 30%, ${hexToRgba(p.a,0.95)} 0%, ${hexToRgba(p.b,0.65)} 40%, rgba(106,0,255,0.18) 70%, rgba(10,10,12,0) 100%)`;
+    blobB.style.background = `radial-gradient(circle at 70% 70%, ${hexToRgba(p.b,0.85)} 0%, ${hexToRgba(p.a,0.45)} 30%, rgba(0,0,0,0) 70%)`;
+  });
+
+  document.getElementById('intens').addEventListener('click', () => {
+    intensity = Math.min(2.2, intensity + 0.25);
+    root.style.setProperty('--blur-amount', `${48 / intensity}px`);
+    root.style.setProperty('--pulse-duration', `${3200 / intensity}ms`);
+    blobA.style.opacity = 0.95 * intensity;
+    blobB.style.opacity = 0.9 * intensity;
+  });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    idx = 0; intensity = 1;
+    root.style.setProperty('--blur-amount', `48px`);
+    root.style.setProperty('--pulse-duration', `3200ms`);
+    blobA.style.opacity = 0.95;
+    blobB.style.opacity = 0.9;
+    blobA.style.background = '';
+    blobB.style.background = '';
+  });
+
+  // helper to convert hex to rgba for gradients
+  function hexToRgba(hex, a = 1){
+    const h = hex.replace('#','');
+    const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  // small perf tip: pause animations when tab inactive
+  document.addEventListener('visibilitychange', () => {
+    const glow = document.getElementById('glow');
+    if(document.hidden){
+      glow.style.animationPlayState = 'paused';
+      blobA.style.animationPlayState = 'paused';
+      blobB.style.animationPlayState = 'paused';
+    } else {
+      glow.style.animationPlayState = 'running';
+      blobA.style.animationPlayState = 'running';
+      blobB.style.animationPlayState = 'running';
+    }
+  });
+</script>
+</body>
+</html>

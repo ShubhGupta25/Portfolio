@@ -6,24 +6,15 @@
 }
 html {
   scroll-behavior: smooth;
+  
 }
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: math;
   color: #fff;
   line-height: 1.6;
   min-height: 100vh;
-  background: radial-gradient(
-      1200px 600px at 10% -10%,
-      rgba(0, 201, 255, 0.06),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 500px at 110% 110%,
-      rgba(255, 0, 204, 0.05),
-      transparent 70%
-    ),
-    linear-gradient(120deg, #0a0a0a 70%, #1a1a2e 100%);
+  /* Glow theme background (soft dark with subtle gradient) */
+  background: linear-gradient(180deg, #05060a 0%, #0b0f17 100%);
 }
 
 /* Motion */
@@ -113,9 +104,9 @@ section {
   max-width: var(--container);
   margin: 0 auto;
 }
-section:nth-child(even) {
+/* section:nth-child(even) {
     background: #181818;
-}
+} */
 
 .section-title {
   font-size: 1.8rem;
@@ -784,6 +775,65 @@ footer {
   color: #aab3bd;
   font-size: 0.95rem;
 }
+
+/* ================== GLOW THEME (copied/adapted from Glow.html) ================== */
+:root{
+  --glow-bg: #0b0f17;
+  --card-bg-soft: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.06);
+  --glow-a: #00ffd0;   /* main glow color */
+  --glow-b: #6a00ff;   /* secondary tint */
+  --glow-size: 480px;
+  --glow-blur: 48px;
+  --glow-pulse: 3200ms;
+}
+
+/* card visual style for main containers */
+.card, .about-card, .portfolio-grid .card, .edu-item, .skill {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
+/* Glow blobs overlay */
+.glow{
+  pointer-events: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: var(--glow-size);
+  height: var(--glow-size);
+  transform: translate(-50%,-50%);
+  z-index: -2; /* behind content */
+  filter: blur(var(--glow-blur));
+  mix-blend-mode: screen;
+  will-change: transform, opacity, filter;
+}
+.glow .blob{
+  position:absolute; inset:0; border-radius:50%;
+  transition: opacity .25s linear, transform .25s linear;
+  background: radial-gradient(circle at 30% 30%,
+     rgba(0,255,208,0.95) 0%, rgba(106,0,255,0.65) 40%, rgba(106,0,255,0.18) 70%, rgba(10,10,12,0) 100%);
+  opacity:0.95; transform: translate3d(0,0,0) scale(1);
+}
+.glow .blob.secondary{
+  background: radial-gradient(circle at 70% 70%,
+     rgba(106,0,255,0.85) 0%, rgba(0,255,208,0.45) 30%, rgba(0,0,0,0) 70%);
+  opacity:0.9; transform: translate3d(18px,-10px,0) scale(0.9); mix-blend-mode: screen;
+}
+
+@keyframes glowPulseA{ 0%{ transform: translate3d(0,0,0) scale(0.92); opacity:0.85 } 50%{ transform: translate3d(-10px,6px,0) scale(1.05); opacity:1 } 100%{ transform: translate3d(0,0,0) scale(0.92); opacity:0.85 } }
+@keyframes glowPulseB{ 0%{ transform: translate3d(18px,-10px,0) scale(0.86); opacity:0.9 } 50%{ transform: translate3d(30px,-6px,0) scale(1.08); opacity:1 } 100%{ transform: translate3d(18px,-10px,0) scale(0.86); opacity:0.9 } }
+.glow .blob{ animation: glowPulseA var(--glow-pulse) ease-in-out infinite; }
+.glow .blob.secondary{ animation: glowPulseB calc(var(--glow-pulse) * 1.1) ease-in-out infinite; }
+
+/* intensify on header hover or focus in main area */
+header:hover ~ .glow, header:focus-within ~ .glow, .hero:hover ~ .glow { filter: blur(calc(var(--glow-blur) / 1.15)); transform: translateZ(0) scale(1.02); }
+
+@media (prefers-reduced-motion: reduce){ .glow, .glow .blob{ display:none !important; } }
+
 
 /* ================== RECOMMENDATIONS ================== */
 .card.rec {
